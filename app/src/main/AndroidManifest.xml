@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.example.originactivity">
 
     <application
@@ -9,9 +10,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity">
+        <activity android:name=".TaskCreateActivity">
         </activity>
-        <activity android:name=".activity_setting">
+        <activity android:name=".PathCheck">
+        </activity>
+        <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".SettingActivity">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+                android:name=".LoginActivity"
+                tools:ignore="DuplicateActivity"/>
     </application>
 
 </manifest>

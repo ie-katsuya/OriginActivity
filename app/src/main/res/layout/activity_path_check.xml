@@ -11,36 +11,28 @@
         android:paddingTop="16dp"
         tools:context=".MainActivity">
 
-    <Button
+    <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="ログイン"
-            android:id="@+id/Login_button"
-            android:layout_above="@+id/Create_button"/>
+            android:text="パスワード"
+            android:id="@+id/Path_text"
+            android:layout_above="@+id/Decide_button"/>
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="アカウント設定"
-            android:id="@+id/Acount_button"
-            android:layout_centerInParent="true"
-            android:layout_above="@+id/Create_button"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="タスク作成"
-            android:id="@+id/Create_button"
+            android:text="決定"
+            android:id="@+id/Decide_button"
             android:layout_marginTop="50dp"
             android:layout_centerInParent="true"/>
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="タスク管理"
-            android:id="@+id/TaskList_button"
-            android:layout_below="@+id/Create_button"
+            android:text="戻る"
+            android:id="@+id/Buck_button"
+            android:layout_below="@+id/Decide_button"
             android:layout_marginTop="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

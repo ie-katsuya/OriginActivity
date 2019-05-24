@@ -11,41 +11,47 @@
         android:paddingTop="16dp"
         tools:context=".MainActivity">
 
-    <Button
+    <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="ログイン"
-            android:id="@+id/Login_button"
-            android:layout_above="@+id/Create_button"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="アカウント設定"
+            android:text="タイトル"
             android:id="@+id/Acount_button"
             android:layout_centerInParent="true"
-            android:layout_above="@+id/Create_button"/>
+            android:layout_above="@+id/Login_button"/>
 
-    <Button
+    <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="タスク作成"
+            android:layout_centerInParent="true"
+            android:text="パスワード"
+            android:id="@+id/Login_button"
+            android:layout_marginTop="50dp"
+            android:layout_above="@+id/Create_button"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ゴール"
             android:id="@+id/Create_button"
             android:layout_marginTop="50dp"
             android:layout_centerInParent="true"/>
 
     <Button
+            android:id="@+id/date_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="タスク管理"
-            android:id="@+id/TaskList_button"
             android:layout_below="@+id/Create_button"
             android:layout_marginTop="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" tools:ignore="UnknownId"/>
+            android:layout_alignParentLeft="true"
+            android:text="----/--/--"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
 
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="作成"
+            android:id="@+id/Decide_button"
+            android:layout_below="@+id/date_button"/>
 
 </RelativeLayout>
