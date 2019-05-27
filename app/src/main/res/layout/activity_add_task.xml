@@ -9,35 +9,39 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".MainActivity">
+        tools:context=".AddTaskActivity">
 
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="タスク内容"
+            android:id="@+id/task_Edit"
+            android:layout_above="@+id/date_button"/>
+
+    <Button
+            android:id="@+id/date_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Create_button"
+            android:layout_marginTop="50dp"
             android:layout_centerInParent="true"
-            android:text="パスワード"
-            android:id="@+id/Path_text"
-            android:layout_above="@+id/Decide_button"/>
+            android:layout_alignParentLeft="true"
+            android:text="----/--/--"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
             android:text="決定"
             android:id="@+id/Decide_button"
-            android:layout_marginTop="50dp"
-            android:layout_centerInParent="true"/>
-
+            android:layout_below="@+id/date_button"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:text="戻る"
             android:id="@+id/Buck_button"
-            android:layout_below="@+id/Decide_button"
-            android:layout_marginTop="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" tools:ignore="UnknownId"/>
-
+            android:layout_below="@+id/Decide_button"/>
 
 </RelativeLayout>

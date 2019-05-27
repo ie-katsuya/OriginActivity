@@ -10,6 +10,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".PassCheckActivity">
+        </activity>
+        <activity android:name=".TaskSearchActivity">
+        </activity>
+        <activity android:name=".AddTaskActivity">
+        </activity>
+        <activity android:name=".TaskDetailActivity">
+        </activity>
         <activity android:name=".TaskCreateActivity">
         </activity>
         <activity android:name=".PathCheck">

@@ -3,7 +3,7 @@ package com.example.originactivity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.database.DatabaseReference
-//import android.support.design.widget.Snackbar
+import android.support.design.widget.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import android.preference.PreferenceManager
 import android.view.inputmethod.InputMethodManager
@@ -40,7 +40,7 @@ class SettingActivity : AppCompatActivity() {
 
             if (user == null) {
                 // ログインしていない場合は何もしない
-                //Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
             } else {
                 // 変更した表示名をFirebaseに保存する
                 val name = nameText.text.toString()
@@ -55,14 +55,14 @@ class SettingActivity : AppCompatActivity() {
                 editor.putString(NameKEY, name)
                 editor.commit()
 
-                //Snackbar.make(v, "表示名を変更しました", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "表示名を変更しました", Snackbar.LENGTH_LONG).show()
             }
         }
 
         logoutButton.setOnClickListener { v ->
             FirebaseAuth.getInstance().signOut()
             nameText.setText("")
-            //Snackbar.make(v, "ログアウトしました", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(v, "ログアウトしました", Snackbar.LENGTH_LONG).show()
         }
     }
 }
