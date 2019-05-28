@@ -49,6 +49,8 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         }else if(v == Decide_button){
             val title = title_Edit.toString()
             val goal = goal_Edit.toString()
+            val pass = pass_Edit.toString()
+
             if (title.isEmpty() == true) {
                 // タイトルが入力されていない時はエラーを表示するだけ
                 Snackbar.make(v!!, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
@@ -61,12 +63,19 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
                 return
             }
 
+            if (pass.isEmpty() == true) {
+                // 質問が入力されていない時はエラーを表示するだけ
+                Snackbar.make(v!!, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
+                return
+            }
+
             data["title"] = title
             data["goal"] = goal
+            data["pass"] = pass
 
             TaskRef.push().setValue(data, this)
             finish()
         }
     }
-    
+
 }
