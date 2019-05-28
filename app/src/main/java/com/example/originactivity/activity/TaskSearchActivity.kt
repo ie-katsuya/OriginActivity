@@ -1,12 +1,13 @@
-package com.example.originactivity
+package com.example.originactivity.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.originactivity.R
 
-class TaskCreateActivity : AppCompatActivity() {
+class TaskSearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_create)
+        setContentView(R.layout.activity_task_search)
     }
 }

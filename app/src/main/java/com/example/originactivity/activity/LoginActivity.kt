@@ -1,25 +1,39 @@
-package com.example.originactivity
+package com.example.originactivity.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.example.originactivity.Const
+import com.example.originactivity.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
-
-import java.util.HashMap
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
+
+    companion object {
+        private const val KEY_LOGOUT = "KEY_LOGOUT"
+
+        fun createIntent(context: Context, isLogout: Boolean) : Intent {
+            return Intent(context, LoginActivity::class.java).also {
+                if(isLogout) {
+                    it.addFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+                                or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    )
+                }
+                it.putExtra(KEY_LOGOUT, isLogout)
+            }
+        }
+    }
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mCreateAccountListener: OnCompleteListener<AuthResult>
@@ -32,6 +46,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        val isLogout = intent?.getBooleanExtra(KEY_LOGOUT, false) ?: false
+        if (isLogout) {
+            // だす
+            Snackbar.make(rootLayout, "ログアウトしました", Snackbar.LENGTH_LONG).show()
+        }
 
         mDataBaseReference = FirebaseDatabase.getInstance().reference
 
@@ -63,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 // 成功した場合
                 val user = mAuth.currentUser
-                val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
+                val userRef = mDataBaseReference.child(Const.UsersPATH).child(user!!.uid)
 
                 if (mIsCreateAccount) {
                     // アカウント作成の時は表示名をFirebaseに保存する
@@ -90,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
 
                 // Activityを閉じる
-                finish()
+                navigateToTaskMain()
 
             } else {
                 // 失敗した場合
@@ -166,7 +185,13 @@ class LoginActivity : AppCompatActivity() {
         // Preferenceに保存する
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = sp.edit()
-        editor.putString(NameKEY, name)
+        editor.putString(Const.NameKEY, name)
         editor.commit()
+    }
+
+    private fun navigateToTaskMain(){
+        val intent = Intent(this, TaskMainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

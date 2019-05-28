@@ -1,4 +1,4 @@
-package com.example.originactivity
+package com.example.originactivity.activity
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -6,16 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.originactivity.R
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.HashMap
-import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() , View.OnClickListener {
+class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
 
     private lateinit var mDatabaseReference: DatabaseReference
 
@@ -23,17 +18,12 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // ログイン済みのユーザーを取得する
-        val user = FirebaseAuth.getInstance().currentUser
+        Search_button.setOnClickListener(this)
 
-        // ログインしていなければログイン画面に遷移させる
-        if (user == null) {
-            //ログイン画面に遷移
-            val intent = Intent(this, LoginActivity::class.java)
+        fab.setOnClickListener { view ->
+            val intent = Intent(this, TaskCreateActivity::class.java)
             startActivity(intent)
         }
-
-        Search_button.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -58,19 +48,5 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // ログイン済みのユーザーを取得する
-        val user = FirebaseAuth.getInstance().currentUser
-
-        // ログインしていなければログイン画面に遷移させる
-        if (user == null) {
-            //ログイン画面に遷移
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

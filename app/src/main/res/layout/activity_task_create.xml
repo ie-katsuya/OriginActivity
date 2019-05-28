@@ -8,39 +8,66 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".MainActivity">
+        tools:context=".activity.TaskMainActivity">
 
-    <EditText
+    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="タイトル"
-            android:id="@+id/Tilte_Edit"
+            android:id="@+id/Title_Text"
             android:layout_centerInParent="true"
-            android:layout_above="@+id/Path_Edit"/>
+            android:layout_above="@+id/title_Edit"/>
 
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:id="@+id/title_Edit"
+            android:gravity="top"
+            android:inputType="text"
+            android:layout_above="@+id/pass_Text"
+            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="パスワード"
-            android:id="@+id/Path_Edit"
-            android:layout_marginTop="50dp"
-            android:layout_above="@+id/Goal_Edit"/>
+            android:id="@+id/pass_Text"
+            android:layout_above="@+id/pass_Edit"
+            android:layout_marginTop="30dp"
+            android:layout_centerInParent="true"/>
 
     <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pass_Edit"
+            android:gravity="top"
+            android:layout_above="@+id/goal_Text"
+            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"
+            android:inputType="number"/>
+
+    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="ゴール"
-            android:id="@+id/Goal_Edit"
-            android:layout_marginTop="50dp"
-            android:layout_centerInParent="true"/>
+            android:id="@+id/goal_Text"
+            android:layout_marginTop="30dp"
+            android:layout_above="@+id/goal_Edit"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/goal_Edit"
+            android:gravity="top"
+            android:inputType="text"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"/>
 
     <Button
             android:id="@+id/date_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Goal_Edit"
-            android:layout_marginTop="50dp"
+            android:layout_below="@+id/goal_Edit"
+            android:layout_marginTop="30dp"
             android:layout_alignParentLeft="true"
             android:text="----/--/--"
             style="@style/Widget.AppCompat.Button.Borderless"/>
@@ -48,9 +75,16 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             android:text="作成"
             android:id="@+id/Decide_button"
             android:layout_below="@+id/date_button"/>
 
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="戻る"
+            android:id="@+id/Buck_button"
+            android:layout_below="@+id/Decide_button"/>
 </RelativeLayout>

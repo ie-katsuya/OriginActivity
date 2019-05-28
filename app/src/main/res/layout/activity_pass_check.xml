@@ -9,7 +9,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".PassCheckActivity">
+        tools:context=".activity.PassCheckActivity">
 
     <Password
             android:layout_width="match_parent"

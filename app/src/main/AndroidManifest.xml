@@ -10,31 +10,32 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".PassCheckActivity">
-        </activity>
-        <activity android:name=".TaskSearchActivity">
-        </activity>
-        <activity android:name=".AddTaskActivity">
-        </activity>
-        <activity android:name=".TaskDetailActivity">
-        </activity>
-        <activity android:name=".TaskCreateActivity">
-        </activity>
-        <activity android:name=".PathCheck">
-        </activity>
-        <activity android:name=".LoginActivity">
-        </activity>
-        <activity android:name=".SettingActivity">
-        </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.PassCheckActivity">
+        </activity>
+        <activity android:name=".activity.TaskSearchActivity">
+        </activity>
+        <activity android:name=".activity.AddContentActivity">
+        </activity>
+        <activity android:name=".activity.TaskDetailActivity">
+        </activity>
+        <activity android:name=".activity.TaskCreateActivity">
+        </activity>
+        <activity android:name=".activity.LoginActivity">
+        </activity>
+        <activity android:name=".activity.SettingActivity">
+        </activity>
+        <activity android:name=".activity.TaskMainActivity">
+
+        </activity>
         <activity
-                android:name=".LoginActivity"
+                android:name=".activity.LoginActivity"
                 tools:ignore="DuplicateActivity"/>
     </application>
 

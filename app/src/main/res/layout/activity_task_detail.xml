@@ -9,14 +9,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".TaskDetailActivity">
-
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="タイトル"
-            android:id="@+id/title_Edit"
-            android:layout_above="@+id/Login_button"/>
+        tools:context=".activity.TaskDetailActivity">
 
     <ListView
             android:layout_width="match_parent"
