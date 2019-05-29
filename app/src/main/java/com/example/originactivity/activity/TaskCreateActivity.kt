@@ -1,29 +1,43 @@
 package com.example.originactivity.activity
 
+import android.app.DatePickerDialog
 import android.content.Context
-import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ListView
 import com.example.originactivity.Const
 import com.example.originactivity.R
-import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.entity.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_task_create.*
-import kotlinx.android.synthetic.main.activity_task_detail.*
-import kotlinx.android.synthetic.main.list_tasks.*
-import java.util.HashMap
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
 
+    private var mYear = 0
+    private var mMonth = 0
+    private var mDay = 0
     private lateinit var mTask: Task
+    private var date: String = ""
+
+    private val mOnDateClickListener = View.OnClickListener {
+        val datePickerDialog = DatePickerDialog(this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                mYear = year
+                mMonth = month
+                mDay = dayOfMonth
+                val dateString =
+                    mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("%02d", mDay)
+                date_button.text = dateString
+                date = date_button.text.toString()
+            }, mYear, mMonth, mDay
+        )
+        datePickerDialog.show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +45,7 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
 
         Buck_button.setOnClickListener(this)
         Decide_button.setOnClickListener(this)
+        date_button.setOnClickListener(mOnDateClickListener)
     }
 
     override fun onClick(v: View?) {
@@ -47,9 +62,9 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
             //タスク管理画面に遷移
             finish()
         }else if(v == Decide_button){
-            val title = title_Edit.toString()
-            val goal = goal_Edit.toString()
-            val pass = pass_Edit.toString()
+            val title = title_Edit.text.toString()
+            val goal = goal_Edit.text.toString()
+            val pass = pass_Edit.text.toString()
 
             if (title.isEmpty() == true) {
                 // タイトルが入力されていない時はエラーを表示するだけ
@@ -69,11 +84,23 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
                 return
             }
 
+            if (date.isEmpty() == true) {
+                // 質問が入力されていない時はエラーを表示するだけ
+                Snackbar.make(v!!, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
+                return
+            }
+
+            val calendar = GregorianCalendar(mYear, mMonth, mDay)
+            val date = calendar.time
+
+            val sdf = SimpleDateFormat("GGGGy年 M月 d日 (E)")
+
             data["title"] = title
             data["goal"] = goal
             data["pass"] = pass
+            data["date"] = sdf.format(date)
 
-            TaskRef.push().setValue(data, this)
+            TaskRef.push().setValue(data)
             finish()
         }
     }

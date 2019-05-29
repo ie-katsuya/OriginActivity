@@ -40,7 +40,7 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
+        //アカウント設定画面に遷移
         if (id == R.id.action_settings) {
             val intent = Intent(applicationContext, SettingActivity::class.java)
             startActivity(intent)
