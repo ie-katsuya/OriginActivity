@@ -4,13 +4,18 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.content.AsyncTaskLoader
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.entity.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_task_create.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,6 +28,9 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
     private var mDay = 0
     private lateinit var mTask: Task
     private var date: String = ""
+
+    // ログイン済みのユーザーを取得する
+    var user = FirebaseAuth.getInstance().currentUser
 
     private val mOnDateClickListener = View.OnClickListener {
         val datePickerDialog = DatePickerDialog(this,
@@ -56,7 +64,8 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         val dataBaseReference = FirebaseDatabase.getInstance().reference
         val TaskRef = dataBaseReference.child(Const.ContentsPATH)
 
-        val data = HashMap<String, String>()
+        val Tdata = HashMap<String, String>()
+        val Fdata = HashMap<String, String>()
 
         if (v == Buck_button) {
             //タスク管理画面に遷移
@@ -93,16 +102,37 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
             val calendar = GregorianCalendar(mYear, mMonth, mDay)
             val date = calendar.time
 
-            val sdf = SimpleDateFormat("GGGGy年 M月 d日 (E)")
+            val sdf = SimpleDateFormat("yyyy年 M月 d日")
 
-            data["title"] = title
-            data["goal"] = goal
-            data["pass"] = pass
-            data["date"] = sdf.format(date)
+            Tdata["title"] = title
+            Tdata["goal"] = goal
+            Tdata["pass"] = pass
+            Tdata["date"] = sdf.format(date)
+            TaskRef.push().setValue(Tdata)
 
-            TaskRef.push().setValue(data)
+            //関与しているタスクidを読み込んで登録
+            reloadId()
+
             finish()
         }
     }
 
+    private fun reloadId(){
+
+        val Fdata = HashMap<String, String>()
+        val dataBaseReference = FirebaseDatabase.getInstance().reference
+        val TaskRef = dataBaseReference.child(Const.ContentsPATH)
+        val FavoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
+
+        TaskRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val TaskId = dataSnapshot.key ?: ""
+
+                Fdata["Task_id"] = TaskId
+                FavoriteRef.setValue(Fdata)
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
 }
