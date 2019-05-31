@@ -17,7 +17,8 @@ class TaskDetailActivity : AppCompatActivity() {
 
         // EXTRA_TASK から Task の id を取得して、 id から Task のインスタンスを取得する
         val intent = intent
-        val taskposition = intent.getIntExtra(EXTRA_TASK, -1)
+        val taskposition = intent.getStringExtra(EXTRA_TASK)
+
 
 
     }

@@ -54,6 +54,11 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_create)
 
+        val calendar = Calendar.getInstance()
+        mYear = calendar.get(Calendar.YEAR)
+        mMonth = calendar.get(Calendar.MONTH)
+        mDay = calendar.get(Calendar.DAY_OF_MONTH)
+
         Buck_button.setOnClickListener(this)
         Decide_button.setOnClickListener(this)
         date_button.setOnClickListener(mOnDateClickListener)
@@ -135,11 +140,13 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val Ref = FavoriteRef.child(taskIdkey)
                 Fdata["title"] = title
-                Fdata["date"] = date
+                //Fdata["date"] = date
                 Ref.setValue(Fdata)
             }
             override fun onCancelled(error: DatabaseError) {
             }
+
         })
+
     }
 }
