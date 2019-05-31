@@ -1,5 +1,6 @@
 package com.example.originactivity.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,14 +10,17 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.originactivity.R
+import com.example.originactivity.entity.FavoriteTask
 import com.example.originactivity.entity.Task
 import java.text.SimpleDateFormat
 import java.util.*
+import android.R
+
+
 
 class TasklistAdapter(context: Context) : BaseAdapter() {
     private var mLayoutInflater: LayoutInflater
-    private var mTaskArrayList = ArrayList<Task>()
+    private var mTaskArrayList = ArrayList<FavoriteTask>()
 
     init {
         mLayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -34,26 +38,30 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
         return mTaskArrayList.size
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         val view: View = convertView ?: mLayoutInflater.inflate(android.R.layout.simple_list_item_2, null)
 
-        val titleText = convertView!!.findViewById<View>(R.id.titleTextView) as TextView
-        titleText.text = mTaskArrayList[position].title
-
-        val goalText = convertView!!.findViewById<View>(R.id.goal_Edit) as TextView
-        goalText.text = mTaskArrayList[position].goal
+        //val titleText = convertView!!.findViewById<View>(R.id.titleTextView) as TextView
+        //titleText.text = mTaskArrayList[position].title
 
         val textView1 = view.findViewById<TextView>(android.R.id.text1)
         val textView2 = view.findViewById<TextView>(android.R.id.text2)
 
         textView1.text = "タイトル： " + mTaskArrayList[position].title
-        //textView2.text = "目標： " + mTaskArrayList[position].goal
 
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPANESE)
+        val sdf = SimpleDateFormat("yyyy年 M月 d日")
+
         val date = mTaskArrayList[position].date
-        textView2.text = simpleDateFormat.format(date)
+
+        textView2.text = "完了日予定： " + sdf.format(date)
 
         return view
+    }
+
+    fun setTaskArrayList(taskArrayList: ArrayList<FavoriteTask>) {
+        mTaskArrayList = taskArrayList
+
     }
 
 }

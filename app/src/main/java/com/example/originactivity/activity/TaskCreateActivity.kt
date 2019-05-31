@@ -10,6 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.Const
 import com.example.originactivity.R
+import com.example.originactivity.adapter.TasklistAdapter
+import com.example.originactivity.entity.FavoriteTask
 import com.example.originactivity.entity.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +30,7 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
     private var mDay = 0
     private lateinit var mTask: Task
     private var date: String = ""
+    private lateinit var mAdapter: TasklistAdapter
 
     // ログイン済みのユーザーを取得する
     var user = FirebaseAuth.getInstance().currentUser
@@ -64,8 +67,8 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         val dataBaseReference = FirebaseDatabase.getInstance().reference
         val TaskRef = dataBaseReference.child(Const.ContentsPATH)
 
-        val Tdata = HashMap<String, String>()
-        val Fdata = HashMap<String, String>()
+        val Tdata = HashMap<String, Any>()
+        val Ddata = HashMap<String, Date>()
 
         if (v == Buck_button) {
             //タスク管理画面に遷移
@@ -107,29 +110,33 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
             Tdata["title"] = title
             Tdata["goal"] = goal
             Tdata["pass"] = pass
-            Tdata["date"] = sdf.format(date)
-            TaskRef.push().setValue(Tdata)
+            Tdata["date"] = date.time
 
-            //関与しているタスクidを読み込んで登録
-            reloadId()
+            val taskp = TaskRef.push()
+            val taskIdkey = taskp.getKey()
+
+            taskp.setValue(Tdata)
+
+            //関与しているタスクidをFavoriteに登録
+            reloadId(taskIdkey!!, title, date.time)
 
             finish()
         }
     }
 
-    private fun reloadId(){
+    private fun reloadId(taskIdkey: String, title: String, date: Any){
 
-        val Fdata = HashMap<String, String>()
+        val Fdata = HashMap<String, Any>()
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val TaskRef = dataBaseReference.child(Const.ContentsPATH)
+        //val TRef = dataBaseReference.child(Const.ContentsPATH).child(mTask.TaskUid)
         val FavoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
 
-        TaskRef.addValueEventListener(object : ValueEventListener {
+        FavoriteRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val TaskId = dataSnapshot.key ?: ""
-
-                Fdata["Task_id"] = TaskId
-                FavoriteRef.setValue(Fdata)
+                val Ref = FavoriteRef.child(taskIdkey)
+                Fdata["title"] = title
+                Fdata["date"] = date
+                Ref.setValue(Fdata)
             }
             override fun onCancelled(error: DatabaseError) {
             }
