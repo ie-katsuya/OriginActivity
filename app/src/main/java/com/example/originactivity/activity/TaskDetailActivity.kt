@@ -37,7 +37,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         //小タスク追加画面に遷移
-        startActivity(AddContentActivity.createIntent(this))
+        startActivity(AddJobActivity.createIntent(this))
     }
 
     private fun setValue(task: Task) {
