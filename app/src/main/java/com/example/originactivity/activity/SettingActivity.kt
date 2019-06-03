@@ -1,5 +1,7 @@
 package com.example.originactivity.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
@@ -15,6 +17,12 @@ import kotlinx.android.synthetic.main.activity_setting.*
 
 
 class SettingActivity : AppCompatActivity() {
+
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, SettingActivity::class.java)
+        }
+    }
 
     private lateinit var mDataBaseReference: DatabaseReference
 
@@ -69,7 +77,7 @@ class SettingActivity : AppCompatActivity() {
         startActivity(LoginActivity.createIntent(this, true))
     }
 
-    private fun saveFirebase(userId : String, name: String){
+    private fun saveFirebase(userId: String, name: String) {
         // 変更した表示名をFirebaseに保存する
         val userRef = mDataBaseReference.child(Const.UsersPATH).child(userId)
         val data = HashMap<String, String>()
@@ -77,7 +85,7 @@ class SettingActivity : AppCompatActivity() {
         userRef.setValue(data)
     }
 
-    private fun saveDisplayName(name: String){
+    private fun saveDisplayName(name: String) {
         val sp = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val editor = sp.edit()
         editor.putString(Const.NameKEY, name)

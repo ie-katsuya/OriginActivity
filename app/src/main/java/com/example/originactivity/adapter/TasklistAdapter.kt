@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.originactivity.entity.FavoriteTask
+import com.example.originactivity.model.entity.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class TasklistAdapter(context: Context) : BaseAdapter() {
     private var mLayoutInflater: LayoutInflater
-    private var mTaskArrayList = ArrayList<FavoriteTask>()
+    private var mTaskArrayList: List<Task> = emptyList()
 
     init {
         mLayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -53,9 +53,15 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
         return view
     }
 
-    fun setTaskArrayList(taskArrayList: ArrayList<FavoriteTask>) {
-        mTaskArrayList = taskArrayList
+    fun setTaskList(taskArrayList: List<Task>) {
+        mTaskArrayList = taskArrayList.sortedWith(Comparator{a, b ->
+            if (a.date > b.date) 1 else -1 //正数：昇順　負数：降順
+        })
+        this.notifyDataSetChanged()
+    }
 
+    fun getTask(position: Int):Task{
+        return mTaskArrayList[position]
     }
 
 }

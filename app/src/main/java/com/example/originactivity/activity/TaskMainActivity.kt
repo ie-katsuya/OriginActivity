@@ -1,94 +1,43 @@
 package com.example.originactivity.activity
 
-import android.app.AlarmManager
-import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.util.Base64
-import android.util.Log
-import android.view.View
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ListView
-import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
-import com.example.originactivity.entity.FavoriteTask
-import com.example.originactivity.entity.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.example.originactivity.model.TaskAPI
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
-
-const val EXTRA_TASK = "com.example.originalactivity.TASK"
 
 class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
 
-    private lateinit var mDatabaseReference: DatabaseReference
-    private lateinit var mListView: ListView
-    private lateinit var mTaskArrayList: ArrayList<FavoriteTask>
-    private lateinit var mAdapter: TasklistAdapter
-    private lateinit var mTask: Task
-
-    private var isChildEventEnabled = false
-
-    var dataBaseReference = FirebaseDatabase.getInstance().reference
-
-    // ログイン済みのユーザーを取得する
-    var user = FirebaseAuth.getInstance().currentUser
-
-    //お気に入り一覧のListView作成
-    private val fEventListener = object : ChildEventListener {
-
-        override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-
-            val map = dataSnapshot.value as Map<String, String>
-            // タスクIDとタイトルと締め切りを取り出す
-            val taskid = dataSnapshot.key ?: ""
-
-            Log.d("unauna", "onChildAdded: $taskid")
-            //締め切りが近い順に並べる
-            val myTopPostsQuery = dataBaseReference.child(Const.ContentsPATH).child(taskid).orderByChild("date")
-
-            // その質問の詳細を取得してリストに表示する
-            myTopPostsQuery.addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val map = dataSnapshot.value as Map<String, Any>
-                    val title = map.get("title") ?: ""
-                    val date = map.get("date") ?: ""
-                    val favoritetask = FavoriteTask(title as String, date)
-                    Log.d("unauna", "onDataChange: $title")
-                    mTaskArrayList.add(favoritetask)
-                    // todo: sort
-                    // todo: notify data set
-                }
-                override fun onCancelled(p0: DatabaseError) {
-                }
-            })
-            mAdapter.notifyDataSetChanged()
-
-        }
-        override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-        }
-        override fun onChildRemoved(p0: DataSnapshot) {
-        }
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-        }
-        override fun onCancelled(p0: DatabaseError) {
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, TaskMainActivity::class.java)
         }
     }
 
+    private lateinit var mDatabaseReference: DatabaseReference
+    private lateinit var mListView: ListView
+    private lateinit var mAdapter: TasklistAdapter
+
+    private val taskAPI = TaskAPI()
+    private var isChildEventEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //
         setupListView()
 
-        //関与しているタスクをリストで表示
-        favoriteList()
+        //リストをタッチした処理
+        ListTouch()
 
         fab.setOnClickListener { view ->
             //タスク作成画面に遷移
@@ -130,16 +79,10 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
         // ListViewの準備
         mListView = this.findViewById(R.id.listView)
         mAdapter = TasklistAdapter(this)
-        mTaskArrayList = ArrayList<FavoriteTask>()
-        mAdapter.notifyDataSetChanged()
 
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
-        mTaskArrayList.clear()
-        mAdapter.setTaskArrayList(mTaskArrayList)
         mListView.adapter = mAdapter
 
-
-        val contentRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
         /*
         contentRef.addChildEventListener(object: ChildEventListener{
             override fun onCancelled(databaseError: DatabaseError) {
@@ -176,98 +119,18 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
             }
         })
 */
-        contentRef.addListenerForSingleValueEvent(
-            object: ValueEventListener{
-                override fun onCancelled(p0: DatabaseError) {
 
-                }
-
-                override fun onDataChange(datasnapshot: DataSnapshot) {
-                    val count = datasnapshot.childrenCount
-                    //関与しているタスクをリストに表示
-                    //appendAllItem(datasnapshot)
-                    val taskIdList = mutableListOf<String>()
-                    datasnapshot.children.forEach {  item ->
-                        val taskId = item.key ?: return@forEach
-                        taskIdList.add(taskId)
-                    }
-                    val totalCount = datasnapshot.childrenCount
-                    var currentCount = 0L
-                    taskIdList.forEach { taskId ->
-
-                        dataBaseReference.child(Const.ContentsPATH).child(taskId).addValueEventListener(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError) {
-                            }
-
-                            override fun onDataChange(p0: DataSnapshot) {
-                                currentCount++
-                                // add
-                                if (currentCount >= totalCount) {
-                                    // sort & 更新 notifyDatasetChange
-                                    isChildEventEnabled = true
-                                }
-                            }
-                        })
-                    }
-
-                    contentRef.removeEventListener(this)
-                }
-            }
-        )
-
+        taskAPI.getTask {
+            mAdapter.setTaskList(it)
+            isChildEventEnabled = true
+        }
     }
 
-    private fun appendAllItem(dsp: DataSnapshot) {
-        // 質問IDとジャンルを取り出す
-        val TaskId = dsp.key ?: ""
-
-        // 関与しているタスクのタイトルと日付を取得してリストに表示する
-        dataBaseReference.child(Const.Favorite)
-                         .child(TaskId)
-                         .addListenerForSingleValueEvent(object: ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val TaskArrayList = ArrayList<FavoriteTask>()
-                val map = dataSnapshot.value as Map<String, String>?
-                if (map != null) {
-                    for (key in map.keys) {
-                        val temp = map[key] as Map<String, String>
-                        val Tasktitle = temp["title"] ?: ""
-                        val Taskdate = temp["date"] ?: ""
-                        var favoritetask = FavoriteTask(Tasktitle, Taskdate)
-                        TaskArrayList.add(favoritetask)
-                        mAdapter.notifyDataSetChanged()
-                    }
-            }
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-            }
-        })
-
-    }
-
-    private fun appendItem() {
-
-    }
-
-    private fun updateItem() {
-
-    }
-
-    private fun favoriteList(){
-        //締め切りが近い順に並べる
-        //val myTopPostsQuery = dataBaseReference.child(Const.Favorite).child(user!!.uid).orderByChild("title")
-        //myTopPostsQuery.addChildEventListener(fEventListener)
-
-        dataBaseReference.child(Const.Favorite).child(user!!.uid).addChildEventListener(fEventListener)
-
+    private fun ListTouch(){
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
             // Taskのインスタンスを渡して質問詳細画面を起動する
-            val intent = Intent(applicationContext, TaskDetailActivity::class.java)
-            intent.putExtra(EXTRA_TASK, mTaskArrayList[position].title)
-            startActivity(intent)
+            startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
         }
 
         /*

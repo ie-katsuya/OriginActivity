@@ -190,8 +190,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToTaskMain(){
-        val intent = Intent(this, TaskMainActivity::class.java)
-        startActivity(intent)
+        startActivity(TaskMainActivity.createIntent(this))
         finish()
     }
 }

@@ -4,15 +4,13 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.content.AsyncTaskLoader
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
-import com.example.originactivity.entity.FavoriteTask
-import com.example.originactivity.entity.Task
+import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -140,7 +138,6 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val Ref = FavoriteRef.child(taskIdkey)
                 Fdata["title"] = title
-                //Fdata["date"] = date
                 Ref.setValue(Fdata)
             }
             override fun onCancelled(error: DatabaseError) {
