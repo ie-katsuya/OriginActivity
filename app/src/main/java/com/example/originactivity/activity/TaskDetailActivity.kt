@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_task_detail.*
 
 class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var task: Task
+
     companion object {
         private const val KEY_TASK = "KEY_TASK"
 
@@ -28,7 +30,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_task_detail)
 
         // EXTRA_TASK から Task の id を取得して、 id から Task のインスタンスを取得する
-        val task = intent.getSerializableExtra(KEY_TASK) as Task
+        task = intent.getSerializableExtra(KEY_TASK) as Task
 
         setValue(task)
 
@@ -36,8 +38,8 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        //小タスク追加画面に遷移
-        startActivity(AddJobActivity.createIntent(this))
+        //ジョブ追加画面に遷移
+        startActivity(AddJobActivity.createIntent(this, task))
     }
 
     private fun setValue(task: Task) {
