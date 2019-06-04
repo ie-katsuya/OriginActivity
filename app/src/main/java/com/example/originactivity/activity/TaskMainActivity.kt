@@ -5,17 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
-import com.example.originactivity.model.TaskAPI
+import com.example.originactivity.model.api.GetTaskAPI
 import com.example.originactivity.model.entity.Task
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
@@ -29,7 +26,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TasklistAdapter
 
-    private val taskAPI = TaskAPI()
+    private val taskAPI = GetTaskAPI()
     private var isChildEventEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

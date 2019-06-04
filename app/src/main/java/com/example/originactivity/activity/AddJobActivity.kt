@@ -9,13 +9,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
-import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TaskDetailAdapter
+import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_add_job.*
 import kotlinx.android.synthetic.main.activity_task_create.Buck_button
 import kotlinx.android.synthetic.main.activity_task_create.Decide_button
@@ -44,7 +43,7 @@ class AddJobActivity : AppCompatActivity(), View.OnClickListener {
     private var date: String = ""
     private lateinit var task: Task
 
-    //private val taskAPI = TaskAPI()
+    private val jobAPI = SetJobAPI()
 
     // ログイン済みのユーザーを取得する
     var user = FirebaseAuth.getInstance().currentUser
@@ -82,44 +81,41 @@ class AddJobActivity : AppCompatActivity(), View.OnClickListener {
         Buck_button.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-        //戻るボタンの場合
-        if (v == Buck_button) {
-            finish()
-        } else {
-            val title = job_Edit.text.toString()
-
-            // キーボードが出てたら閉じる
-            val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            im.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-
-            val dataBaseReference = FirebaseDatabase.getInstance().reference
-            val JobRef = dataBaseReference.child(Const.ContentsPATH).child(task.TaskUid)
-
-            if (title.isEmpty() == true) {
-                // 仕事内容が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "仕事内容を入力して下さい", Snackbar.LENGTH_LONG).show()
-                return
+    override fun onClick(v: View) {
+        when (v.id) {
+            Buck_button.id -> {
+                finish()
             }
-
-            if (date.isEmpty() == true) {
-                // 日付が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
-                return
+            else -> {
+                registrationJob(v)
             }
-
-            val calendar = GregorianCalendar(mYear, mMonth, mDay)
-            val date = calendar.time
-
-            val JobData = HashMap<String, Any>()
-
-            JobData["title"] = title
-            JobData["date"] = date.time
-
-            JobRef.child(Const.JobPATH).push().setValue(JobData)
-
-            finish()
         }
     }
 
+    private fun registrationJob(v: View) {
+        val title = job_Edit.text.toString()
+
+        // キーボードが出てたら閉じる
+        val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        im.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+        if (title.isEmpty()) {
+            // 仕事内容が入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "仕事内容を入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        if (date.isEmpty()) {
+            // 日付が入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        val calendar = GregorianCalendar(mYear, mMonth, mDay)
+        val date = calendar.time
+
+        jobAPI.setJob(task.taskId, title, date.time)
+
+        finish()
+    }
 }

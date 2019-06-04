@@ -1,12 +1,9 @@
-package com.example.originactivity.model
+package com.example.originactivity.model.api
 
-
-import com.example.originactivity.Const
-import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase
 
-abstract class FirebaseAPI{
+abstract class FirebaseAPI {
 
     protected val firebaseReference = FirebaseDatabase.getInstance().reference
 

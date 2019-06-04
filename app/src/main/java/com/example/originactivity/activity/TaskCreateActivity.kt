@@ -121,6 +121,7 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
             Tdata["goal"] = goal
             Tdata["pass"] = pass
             Tdata["date"] = date.time
+            //Tdata["taskUid"] = taskIdkey.toString()
 
             taskp.setValue(Tdata)
 
@@ -135,7 +136,7 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
 
         val Fdata = HashMap<String, Any>()
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        //val TRef = dataBaseReference.child(Const.ContentsPATH).child(mTask.TaskUid)
+        //val TRef = dataBaseReference.child(Const.ContentsPATH).child(mTask.taskUid)
         val FavoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
 
         FavoriteRef.addValueEventListener(object : ValueEventListener {

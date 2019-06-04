@@ -1,4 +1,4 @@
-package com.example.originactivity.model
+package com.example.originactivity.model.api
 
 import com.example.originactivity.Const
 import com.example.originactivity.model.entity.Task
@@ -6,8 +6,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-class TaskAPI : FirebaseAPI() {
-    
+class GetTaskAPI : FirebaseAPI() {
+
     fun getTask(callback: (List<Task>) -> Unit) {
         val uid = user?.uid ?: return
         val contentRef = firebaseReference
@@ -29,7 +29,6 @@ class TaskAPI : FirebaseAPI() {
     }
 
     private fun getAllItem(datasnapshot: DataSnapshot, callback: (List<Task>) -> Unit) {
-        val count = datasnapshot.childrenCount
         //関与しているタスクをリストに表示
         val taskIdList = mutableListOf<String>()
         datasnapshot.children.forEach { item ->

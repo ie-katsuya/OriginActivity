@@ -7,5 +7,5 @@ data class Task(
     val pass: String,
     val goal: String,
     val date: Long,
-    val TaskUid: String
+    val taskId: String
 ) : Serializable
