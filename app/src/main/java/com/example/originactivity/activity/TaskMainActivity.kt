@@ -3,7 +3,9 @@ package com.example.originactivity.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,11 +13,12 @@ import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.TaskAPI
+import com.example.originactivity.model.entity.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
-class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
+class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         fun createIntent(context: Context): Intent {
@@ -23,7 +26,6 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
         }
     }
 
-    private lateinit var mDatabaseReference: DatabaseReference
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TasklistAdapter
 
@@ -41,8 +43,7 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
 
         fab.setOnClickListener { view ->
             //タスク作成画面に遷移
-            val intent = Intent(this, TaskCreateActivity::class.java)
-            startActivity(intent)
+            startActivity(TaskCreateActivity.createIntent(this))
         }
 
         Search_button.setOnClickListener(this)
@@ -50,8 +51,7 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
 
     override fun onClick(v: View?) {
         //タスク検索画面に遷移
-        val intent = Intent(this, TaskSearchActivity::class.java)
-        startActivity(intent)
+        startActivity(TaskSearchActivity.createIntent(this))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,18 +64,14 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
         val id = item.itemId
         //アカウント設定画面に遷移
         if (id == R.id.action_settings) {
-            val intent = Intent(applicationContext, SettingActivity::class.java)
-            startActivity(intent)
+            startActivity(SettingActivity.createIntent(this))
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setupListView(){
-        // Firebase
-        mDatabaseReference = FirebaseDatabase.getInstance().reference
-
+    private fun setupListView() {
         // ListViewの準備
         mListView = this.findViewById(R.id.listView)
         mAdapter = TasklistAdapter(this)
@@ -126,14 +122,13 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
         }
     }
 
-    private fun ListTouch(){
+    private fun ListTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
             // Taskのインスタンスを渡して質問詳細画面を起動する
             startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
         }
 
-        /*
         // ListViewを長押ししたときの処理
         mListView.setOnItemLongClickListener { parent, _, position, _ ->
 
@@ -149,7 +144,7 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
             builder.setMessage(task.title + "を削除しますか")
 
             builder.setPositiveButton("OK") { _, _ ->
-                deleteTask(task.id)
+                //deleteTask(task.id)
             }
 
             builder.setNegativeButton("CANCEL", null)
@@ -158,7 +153,7 @@ class TaskMainActivity : AppCompatActivity() , View.OnClickListener {
             dialog.show()
 
             true
-        }*/
+        }
 
     }
 

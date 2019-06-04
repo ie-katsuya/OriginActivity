@@ -2,6 +2,7 @@ package com.example.originactivity.activity
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
@@ -9,8 +10,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.Const
 import com.example.originactivity.R
-import com.example.originactivity.adapter.TasklistAdapter
-import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,20 +20,25 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
+class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
+
+    companion object {
+        fun createIntent(context: Context): Intent {
+            return Intent(context, TaskCreateActivity::class.java)
+        }
+    }
 
     private var mYear = 0
     private var mMonth = 0
     private var mDay = 0
-    private lateinit var mTask: Task
     private var date: String = ""
-    private lateinit var mAdapter: TasklistAdapter
 
     // ログイン済みのユーザーを取得する
     var user = FirebaseAuth.getInstance().currentUser
 
     private val mOnDateClickListener = View.OnClickListener {
-        val datePickerDialog = DatePickerDialog(this,
+        val datePickerDialog = DatePickerDialog(
+            this,
             DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 mYear = year
                 mMonth = month
@@ -76,7 +80,7 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         if (v == Buck_button) {
             //タスク管理画面に遷移
             finish()
-        }else if(v == Decide_button){
+        } else if (v == Decide_button) {
             val title = title_Edit.text.toString()
             val goal = goal_Edit.text.toString()
             val pass = pass_Edit.text.toString()
@@ -110,13 +114,13 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
 
             val sdf = SimpleDateFormat("yyyy年 M月 d日")
 
+            val taskp = TaskRef.push()
+            val taskIdkey = taskp.getKey()
+
             Tdata["title"] = title
             Tdata["goal"] = goal
             Tdata["pass"] = pass
             Tdata["date"] = date.time
-
-            val taskp = TaskRef.push()
-            val taskIdkey = taskp.getKey()
 
             taskp.setValue(Tdata)
 
@@ -127,7 +131,7 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
         }
     }
 
-    private fun reloadId(taskIdkey: String, title: String, date: Any){
+    private fun reloadId(taskIdkey: String, title: String, date: Any) {
 
         val Fdata = HashMap<String, Any>()
         val dataBaseReference = FirebaseDatabase.getInstance().reference
@@ -140,6 +144,7 @@ class TaskCreateActivity : AppCompatActivity()  , View.OnClickListener {
                 Fdata["title"] = title
                 Ref.setValue(Fdata)
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
 

@@ -54,13 +54,13 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
     }
 
     fun setTaskList(taskArrayList: List<Task>) {
-        mTaskArrayList = taskArrayList.sortedWith(Comparator{a, b ->
+        mTaskArrayList = taskArrayList.sortedWith(Comparator { a, b ->
             if (a.date > b.date) 1 else -1 //正数：昇順　負数：降順
         })
         this.notifyDataSetChanged()
     }
 
-    fun getTask(position: Int):Task{
+    fun getTask(position: Int): Task {
         return mTaskArrayList[position]
     }
 

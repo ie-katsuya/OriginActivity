@@ -9,20 +9,27 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".activity.AddContentActivity">
+        tools:context=".activity.AddJobActivity">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="仕事内容"
+            android:id="@+id/job_Text"
+            android:layout_above="@+id/job_Edit"
+            android:layout_centerInParent="true"/>
 
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="タスク内容"
-            android:id="@+id/task_Edit"
+            android:layout_marginTop="20dp"
+            android:id="@+id/job_Edit"
             android:layout_above="@+id/date_button"/>
 
     <Button
             android:id="@+id/date_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Create_button"
             android:layout_marginTop="50dp"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"

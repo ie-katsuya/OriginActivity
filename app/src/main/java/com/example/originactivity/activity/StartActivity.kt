@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
-class StartActivity: AppCompatActivity() {
+class StartActivity : AppCompatActivity() {
 
     companion object {
         fun createIntent(context: Context): Intent {
@@ -24,10 +24,9 @@ class StartActivity: AppCompatActivity() {
         if (user == null) {
             //ログイン画面に遷移
             startActivity(LoginActivity.createIntent(this, false))
-        }else{
+        } else {
             //メイン画面に遷移
-            val intent = Intent(this, TaskMainActivity::class.java)
-            startActivity(intent)
+            startActivity(TaskMainActivity.createIntent(this))
         }
         finish()
     }

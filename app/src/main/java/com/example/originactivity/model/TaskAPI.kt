@@ -3,10 +3,7 @@ package com.example.originactivity.model
 import com.example.originactivity.Const
 import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class TaskAPI {
 
@@ -46,24 +43,26 @@ class TaskAPI {
         val totalCount = datasnapshot.childrenCount
         var currentCount = 0L
         val taskList = mutableListOf<Task>()
+
         taskIdList.forEach { taskId ->
-            firebaseReference
+            val taskDetabaseReference = firebaseReference
                 .child(Const.ContentsPATH)
                 .child(taskId)
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                        //未使用
-                    }
+            taskDetabaseReference.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //未使用
+                }
 
-                    override fun onDataChange(data: DataSnapshot) {
-                        currentCount++
-                        val favoriteTask = data.toTask()
-                        taskList.add(favoriteTask)
-                        if (currentCount >= totalCount) {
-                            callback(taskList)
-                        }
+                override fun onDataChange(data: DataSnapshot) {
+                    taskDetabaseReference.removeEventListener(this)
+                    currentCount++
+                    val favoriteTask = data.toTask()
+                    taskList.add(favoriteTask)
+                    if (currentCount >= totalCount) {
+                        callback(taskList)
                     }
-                })
+                }
+            })
         }
     }
 
@@ -73,6 +72,7 @@ class TaskAPI {
         val pass = map.get("pass") ?: ""
         val goal = map.get("goal") ?: ""
         val date = map.get("date")?.let { it as? Long } ?: 0L
-        return Task(title as String, pass as String, goal as String, date)
+        val taskUid = this.key ?: ""
+        return Task(title as String, pass as String, goal as String, date, taskUid)
     }
 }
