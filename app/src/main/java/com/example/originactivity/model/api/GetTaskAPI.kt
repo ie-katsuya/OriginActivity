@@ -1,6 +1,7 @@
 package com.example.originactivity.model.api
 
 import com.example.originactivity.Const
+import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -63,11 +64,26 @@ class GetTaskAPI : FirebaseAPI() {
 
     private fun DataSnapshot.toTask(): Task {
         val map = this.value as Map<String, Any>
-        val title = map.get("title") ?: ""
-        val pass = map.get("pass") ?: ""
-        val goal = map.get("goal") ?: ""
-        val date = map.get("date")?.let { it as? Long } ?: 0L
+        val title = map.get("title") as? String ?: ""
+        val pass = map.get("pass") as? String ?: ""
+        val goal = map.get("goal") as? String ?: ""
+        val date = map.get("date") as? Long ?: 0L
         val taskUid = this.key ?: ""
-        return Task(title as String, pass as String, goal as String, date, taskUid)
+        val job = map.get("job") as? HashMap<String, Any>
+        val jobs = mutableListOf<Job>()
+        job?.forEach {
+            val value = it.value as? HashMap<String, Any> ?: return@forEach
+            val jobTitle = value["title"] as? String ?: ""
+            val jobDate = value["date"] as? Long ?: 0L
+            jobs.add(Job(jobTitle, jobDate))
+        }
+        return Task(
+            title,
+            pass,
+            goal,
+            date,
+            taskUid,
+            jobs
+        )
     }
 }

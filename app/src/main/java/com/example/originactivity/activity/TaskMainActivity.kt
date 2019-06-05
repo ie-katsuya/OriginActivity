@@ -154,29 +154,10 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    /*
+
     private fun deleteTask(taskId: Int){
-        val results = mRealm
-            .where(Task::class.java)
-            .equalTo("id", taskId)
-            .findAll()
-
-        mRealm.beginTransaction()
-        results.deleteAllFromRealm()
-        mRealm.commitTransaction()
-
-        val resultIntent = Intent(applicationContext, TaskAlarmReceiver::class.java)
-        val resultPendingIntent = PendingIntent.getBroadcast(
-            this,
-            taskId,
-            resultIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(resultPendingIntent)
-
-        reloadListView(mCategoryId)
-    }*/
+//        var genreRef = dataBaseReference.child("favorite").child(user!!.uid).child(mQuestion.questionUid)
+//        genreRef.removeValue()
+    }
 
 }

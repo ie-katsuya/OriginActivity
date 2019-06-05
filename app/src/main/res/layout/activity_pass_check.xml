@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="パスワード"
-            android:id="@+id/Path_pass"
+            android:id="@+id/pass_pass"
             android:layout_above="@+id/Decide_button"/>
 
     <Button

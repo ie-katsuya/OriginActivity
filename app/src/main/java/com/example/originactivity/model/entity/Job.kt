@@ -4,6 +4,5 @@ import java.io.Serializable
 
 class Job (
     val title: String,
-    val date: Long,
-    val jobUid: String
+    val date: Long
     ) : Serializable

@@ -1,6 +1,6 @@
 package com.example.originactivity.model.api
 
-class SetTask : FirebaseAPI() {
+class SetTaskAPI : FirebaseAPI() {
 
 
 }

@@ -72,10 +72,9 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
         im.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val TaskRef = dataBaseReference.child(Const.ContentsPATH)
+        val taskRef = dataBaseReference.child(Const.ContentsPATH)
 
-        val Tdata = HashMap<String, Any>()
-        val Ddata = HashMap<String, Date>()
+        val tdata = HashMap<String, Any>()
 
         if (v == Buck_button) {
             //タスク管理画面に遷移
@@ -114,36 +113,37 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
 
             val sdf = SimpleDateFormat("yyyy年 M月 d日")
 
-            val taskp = TaskRef.push()
+            val taskp = taskRef.push()
             val taskIdkey = taskp.getKey()
 
-            Tdata["title"] = title
-            Tdata["goal"] = goal
-            Tdata["pass"] = pass
-            Tdata["date"] = date.time
+            tdata["title"] = title
+            tdata["goal"] = goal
+            tdata["pass"] = pass
+            tdata["date"] = date.time
+
             //Tdata["taskUid"] = taskIdkey.toString()
 
-            taskp.setValue(Tdata)
+            taskp.setValue(tdata)
 
             //関与しているタスクidをFavoriteに登録
             reloadId(taskIdkey!!, title, date.time)
 
             finish()
+
         }
     }
 
     private fun reloadId(taskIdkey: String, title: String, date: Any) {
 
-        val Fdata = HashMap<String, Any>()
+        val fdata = HashMap<String, Any>()
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        //val TRef = dataBaseReference.child(Const.ContentsPATH).child(mTask.taskUid)
-        val FavoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
+        val favoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
 
-        FavoriteRef.addValueEventListener(object : ValueEventListener {
+        favoriteRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val Ref = FavoriteRef.child(taskIdkey)
-                Fdata["title"] = title
-                Ref.setValue(Fdata)
+                val ref = favoriteRef.child(taskIdkey)
+                fdata["title"] = title
+                ref.setValue(fdata)
             }
 
             override fun onCancelled(error: DatabaseError) {

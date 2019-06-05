@@ -33,10 +33,6 @@ class AddJobActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private lateinit var mDatabaseReference: DatabaseReference
-    private lateinit var mListView: ListView
-    private lateinit var mAdapter: TaskDetailAdapter
-
     private var mYear = 0
     private var mMonth = 0
     private var mDay = 0
@@ -44,9 +40,6 @@ class AddJobActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var task: Task
 
     private val jobAPI = SetJobAPI()
-
-    // ログイン済みのユーザーを取得する
-    var user = FirebaseAuth.getInstance().currentUser
 
     private val mOnDateClickListener = View.OnClickListener {
         val datePickerDialog = DatePickerDialog(
