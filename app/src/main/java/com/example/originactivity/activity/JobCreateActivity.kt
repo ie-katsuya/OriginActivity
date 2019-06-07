@@ -8,25 +8,21 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ListView
 import com.example.originactivity.R
-import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_add_job.*
 import kotlinx.android.synthetic.main.activity_task_create.Buck_button
 import kotlinx.android.synthetic.main.activity_task_create.Decide_button
 import kotlinx.android.synthetic.main.activity_task_create.date_button
 import java.util.*
 
-class AddJobActivity : AppCompatActivity(), View.OnClickListener {
+class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val KEY_TASK = "KEY_TASK"
         fun createIntent(context: Context, task: Task): Intent {
-            return Intent(context, AddJobActivity::class.java).also {
+            return Intent(context, JobCreateActivity::class.java).also {
                 it.putExtra(KEY_TASK, task)
             }
 

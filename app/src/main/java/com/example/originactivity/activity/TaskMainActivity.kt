@@ -9,10 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
+import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.GetTaskAPI
 import com.example.originactivity.model.entity.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
@@ -33,6 +36,8 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+
         setupListView()
 
         //リストをタッチした処理
@@ -43,7 +48,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(TaskCreateActivity.createIntent(this))
         }
 
-        Search_button.setOnClickListener(this)
+        search_button.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -76,43 +81,6 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mListView.adapter = mAdapter
 
-        /*
-        contentRef.addChildEventListener(object: ChildEventListener{
-            override fun onCancelled(databaseError: DatabaseError) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-
-            override fun onChildMoved(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-
-            override fun onChildChanged(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-                updateItem()
-            }
-
-            override fun onChildAdded(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-                //追加する1件
-                appendItem()
-            }
-
-            override fun onChildRemoved(datasnapshot: DataSnapshot) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-        })
-*/
-
         taskAPI.getTask {
             mAdapter.setTaskList(it)
             isChildEventEnabled = true
@@ -141,7 +109,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
             builder.setMessage(task.title + "を削除しますか")
 
             builder.setPositiveButton("OK") { _, _ ->
-                //deleteTask(task.id)
+                deleteTask(mAdapter.getTask(position))
             }
 
             builder.setNegativeButton("CANCEL", null)
@@ -154,10 +122,32 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    //後ほどAPI化
+    private fun deleteTask(task: Task) {
+        // ログイン済みのユーザーを取得する
+        val user = FirebaseAuth.getInstance().currentUser
 
-    private fun deleteTask(taskId: Int){
-//        var genreRef = dataBaseReference.child("favorite").child(user!!.uid).child(mQuestion.questionUid)
-//        genreRef.removeValue()
+        var deleteRef = FirebaseDatabase.getInstance().reference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+
+        var deleteFavoriteRef = FirebaseDatabase.getInstance().reference
+            .child(Const.Favorite)
+            .child(user!!.uid)
+            .child(task.taskId)
+
+        deleteRef.removeValue()
+        deleteFavoriteRef.removeValue()
+
+        taskAPI.getTask {
+            mAdapter.setTaskList(it)
+        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        taskAPI.getTask {
+            mAdapter.setTaskList(it)
+        }
+    }
 }

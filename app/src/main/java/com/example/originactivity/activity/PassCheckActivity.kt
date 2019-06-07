@@ -9,9 +9,6 @@ import android.view.View
 import com.example.originactivity.R
 import com.example.originactivity.model.entity.Task
 import kotlinx.android.synthetic.main.activity_pass_check.*
-import kotlinx.android.synthetic.main.activity_pass_check.Buck_button
-import kotlinx.android.synthetic.main.activity_pass_check.Decide_button
-import kotlinx.android.synthetic.main.activity_task_create.*
 
 class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var task: Task
@@ -49,16 +46,14 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun registrationPass(v: View) {
-        val pass = pass_pass.toString()
+        val pass = pass_pass.text.toString()
 
-        if (pass.isEmpty()) {
-            // タイトルが入力されていない時はエラーを表示するだけ
-            Snackbar.make(v, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
-            return
-        }
-
-        if(pass == task.pass){
+        if (pass == task.pass) {
             startActivity(TaskDetailActivity.createIntent(this, task))
+        } else {
+            // タイトルが入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "パスワードが間違っています", Snackbar.LENGTH_LONG).show()
+            return
         }
 
     }

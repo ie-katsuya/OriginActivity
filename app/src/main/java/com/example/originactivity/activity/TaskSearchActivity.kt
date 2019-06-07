@@ -3,17 +3,15 @@ package com.example.originactivity.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.GetTaskAPI
-import kotlinx.android.synthetic.main.activity_task_create.*
 import kotlinx.android.synthetic.main.activity_task_search.*
 
-class TaskSearchActivity : AppCompatActivity() , View.OnClickListener  {
+class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         fun createIntent(context: Context): Intent {
@@ -39,11 +37,8 @@ class TaskSearchActivity : AppCompatActivity() , View.OnClickListener  {
     }
 
     override fun onClick(v: View?) {
-        val search = search_edit.text.toString()
-
-        if (search.isEmpty()) {
-
-        }
+        val keyWord = search_edit.text.toString()
+        mAdapter.filterTask(keyWord)
     }
 
     private fun setupListView() {
@@ -54,45 +49,8 @@ class TaskSearchActivity : AppCompatActivity() , View.OnClickListener  {
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mListView.adapter = mAdapter
 
-        /*
-        contentRef.addChildEventListener(object: ChildEventListener{
-            override fun onCancelled(databaseError: DatabaseError) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-
-            override fun onChildMoved(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-
-            override fun onChildChanged(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-                updateItem()
-            }
-
-            override fun onChildAdded(datasnapshot: DataSnapshot, s: String?) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-                //追加する1件
-                appendItem()
-            }
-
-            override fun onChildRemoved(datasnapshot: DataSnapshot) {
-                if (!isChildEventEnabled) {
-                    return
-                }
-            }
-        })
-*/
-
-        taskAPI.getTask {
-            mAdapter.setTaskList(it)
+        taskAPI.getTaskAll { taskList ->
+            mAdapter.setTaskList(taskList)
         }
     }
 
@@ -102,6 +60,6 @@ class TaskSearchActivity : AppCompatActivity() , View.OnClickListener  {
             // Taskのインスタンスを渡して質問詳細画面を起動する
             startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
         }
-
     }
+
 }

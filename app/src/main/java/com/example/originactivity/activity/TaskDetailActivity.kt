@@ -32,6 +32,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
     val jobList = mutableListOf<Job>()
+    private var isChildEventEnabled = false
 
     private val jobAPI = GetJobAPI()
 
@@ -50,7 +51,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         //ジョブ追加画面に遷移
-        startActivity(AddJobActivity.createIntent(this, task))
+        startActivity(JobCreateActivity.createIntent(this, task))
     }
 
     private fun setValue() {
@@ -70,6 +71,11 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         mAdapter.setJobList(task.jobs)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mAdapter.setJobList(task.jobs)
     }
 
 }

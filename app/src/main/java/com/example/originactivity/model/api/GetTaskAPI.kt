@@ -52,14 +52,32 @@ class GetTaskAPI : FirebaseAPI() {
                 override fun onDataChange(data: DataSnapshot) {
                     taskDetabaseReference.removeEventListener(this)
                     currentCount++
-                    val favoriteTask = data.toTask()
-                    taskList.add(favoriteTask)
+                    val allTask = data.toTask()
+                    taskList.add(allTask)
                     if (currentCount >= totalCount) {
                         callback(taskList)
                     }
                 }
             })
         }
+    }
+
+    fun getTaskAll(callback: (List<Task>) -> Unit) {
+        val contentRef = firebaseReference
+            .child(Const.ContentsPATH)
+
+        contentRef.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //未使用
+                }
+
+                override fun onDataChange(datasnapshot: DataSnapshot) {
+                    getAllItem(datasnapshot, callback)
+                    contentRef.removeEventListener(this)
+                }
+            }
+        )
     }
 
     private fun DataSnapshot.toTask(): Task {
@@ -85,5 +103,9 @@ class GetTaskAPI : FirebaseAPI() {
             taskUid,
             jobs
         )
+    }
+
+    private fun searchTask(taskId: String) {
+
     }
 }

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.Const
 import com.example.originactivity.R
+import com.example.originactivity.model.api.SetTaskAPI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,6 +33,8 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
     private var mMonth = 0
     private var mDay = 0
     private var date: String = ""
+
+    private val taskAPI = SetTaskAPI()
 
     // ログイン済みのユーザーを取得する
     var user = FirebaseAuth.getInstance().currentUser
@@ -111,45 +114,17 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
             val calendar = GregorianCalendar(mYear, mMonth, mDay)
             val date = calendar.time
 
-            val sdf = SimpleDateFormat("yyyy年 M月 d日")
-
-            val taskp = taskRef.push()
-            val taskIdkey = taskp.getKey()
-
             tdata["title"] = title
             tdata["goal"] = goal
             tdata["pass"] = pass
             tdata["date"] = date.time
 
-            //Tdata["taskUid"] = taskIdkey.toString()
-
-            taskp.setValue(tdata)
-
-            //関与しているタスクidをFavoriteに登録
-            reloadId(taskIdkey!!, title, date.time)
-
-            finish()
+            taskAPI.setTask(tdata){isResult ->
+                if(isResult){
+                    finish()
+                }
+            }
 
         }
-    }
-
-    private fun reloadId(taskIdkey: String, title: String, date: Any) {
-
-        val fdata = HashMap<String, Any>()
-        val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val favoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
-
-        favoriteRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val ref = favoriteRef.child(taskIdkey)
-                fdata["title"] = title
-                ref.setValue(fdata)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-        })
-
     }
 }
