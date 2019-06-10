@@ -23,6 +23,7 @@ class GetJobAPI : FirebaseAPI() {
 
                 override fun onDataChange(datasnapshot: DataSnapshot) {
                     //getJobItem(datasnapshot, callback)
+
                     //関与しているタスクをリストに表示
                     val jobIdList = mutableListOf<String>()
                     datasnapshot.children.forEach { item ->
@@ -58,13 +59,12 @@ class GetJobAPI : FirebaseAPI() {
         if (currentCount >= totalCount) {
             callback(jobList)
         }
-
     }
 
     private fun DataSnapshot.toJob(): Job {
         val map = this.value as Map<String, Any>
-        val title = map.get("title") ?: ""
+        val title = map.get("title") as? String ?: ""
         val date = map.get("date")?.let { it as? Long } ?: 0L
-        return Job(title as String, date)
+        return Job(title, date)
     }
 }

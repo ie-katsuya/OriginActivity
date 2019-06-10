@@ -3,15 +3,19 @@ package com.example.originactivity.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ListView
 import android.widget.TextView
+import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.GetJobAPI
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_task_detail.*
 
 class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
@@ -47,6 +51,8 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         setupListView()
 
+        ListTouch()
+
         add_button.setOnClickListener(this)
     }
 
@@ -74,15 +80,67 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        /*
+    private fun ListTouch() {
+        // ListViewをタップしたときの処理
+        mListView.setOnItemClickListener { parent, view, position, id ->
+            // Taskのインスタンスを渡して質問詳細画面を起動する
+            startActivity(JobDetailActivity.createIntent(this, mAdapter.getJob(position)))
+        }
+
+        // ListViewを長押ししたときの処理
+        mListView.setOnItemLongClickListener { parent, _, position, _ ->
+
+            // タスクを削除する
+            val task = parent
+                .adapter
+                .getItem(position) as Task
+
+            // ダイアログを表示する
+            val builder = AlertDialog.Builder(this@TaskDetailActivity)
+
+            builder.setTitle("削除")
+            builder.setMessage(task.title + "を削除しますか")
+
+            builder.setPositiveButton("OK") { _, _ ->
+                deleteJob(mAdapter.getJob(position))
+            }
+
+            builder.setNegativeButton("CANCEL", null)
+
+            val dialog = builder.create()
+            dialog.show()
+
+            true
+        }
+
+    }
+
+    //後ほどAPI化
+    private fun deleteJob(job: Job) {
+        // ログイン済みのユーザーを取得する
+        val user = FirebaseAuth.getInstance().currentUser
+
+        var deleteRef = FirebaseDatabase.getInstance().reference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+            .child(Const.JobPATH)
+
+
+
+        deleteRef.removeValue()
+
         jobAPI.getJob(task.taskId) {
             mAdapter.setJobList(it)
         }
-        */
+    }
 
-        mAdapter.setJobList(task.jobs)
+    override fun onResume() {
+        super.onResume()
+
+//        jobAPI.getJob(task.taskId) {
+//            mAdapter.setJobList(it)
+//        }
+        //mAdapter.setJobList(task.jobs)
     }
 
     private fun setUsers(){
