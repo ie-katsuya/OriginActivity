@@ -83,7 +83,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
     private fun ListTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
-            // Taskのインスタンスを渡して質問詳細画面を起動する
+            // jobのインスタンスを渡して質問詳細画面を起動する
             startActivity(JobDetailActivity.createIntent(this, mAdapter.getJob(position)))
         }
 
@@ -125,8 +125,6 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
             .child(task.taskId)
             .child(Const.JobPATH)
 
-
-
         deleteRef.removeValue()
 
         jobAPI.getJob(task.taskId) {
@@ -140,7 +138,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 //        jobAPI.getJob(task.taskId) {
 //            mAdapter.setJobList(it)
 //        }
-        //mAdapter.setJobList(task.jobs)
+        mAdapter.setJobList(task.jobs)
     }
 
     private fun setUsers(){
