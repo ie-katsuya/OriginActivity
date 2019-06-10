@@ -63,6 +63,7 @@ class GetTaskAPI : FirebaseAPI() {
     }
 
     fun getTaskAll(callback: (List<Task>) -> Unit) {
+
         val contentRef = firebaseReference
             .child(Const.ContentsPATH)
 
@@ -101,7 +102,8 @@ class GetTaskAPI : FirebaseAPI() {
             goal,
             date,
             taskUid,
-            jobs
+            jobs,
+            user!!.uid
         )
     }
 

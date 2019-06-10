@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
@@ -36,7 +37,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         searchButton.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View) {
         val keyWord = search_edit.text.toString()
         mAdapter.filterTask(keyWord)
     }
@@ -49,9 +50,11 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mListView.adapter = mAdapter
 
+
         taskAPI.getTaskAll { taskList ->
             mAdapter.setTaskList(taskList)
         }
+
     }
 
     private fun ListTouch() {

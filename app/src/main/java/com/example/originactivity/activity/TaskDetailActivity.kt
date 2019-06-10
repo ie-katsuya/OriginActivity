@@ -32,7 +32,6 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
     val jobList = mutableListOf<Job>()
-    private var isChildEventEnabled = false
 
     private val jobAPI = GetJobAPI()
 
@@ -41,6 +40,8 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_task_detail)
 
         task = intent.getSerializableExtra(KEY_TASK) as Task
+
+        //setUsers()
 
         setValue()
 
@@ -75,7 +76,16 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
+        /*
+        jobAPI.getJob(task.taskId) {
+            mAdapter.setJobList(it)
+        }
+        */
+
         mAdapter.setJobList(task.jobs)
     }
 
+    private fun setUsers(){
+
+    }
 }

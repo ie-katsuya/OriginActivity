@@ -8,5 +8,6 @@ data class Task(
     val goal: String,
     val date: Long,
     val taskId: String,
-    val jobs: List<Job>
+    val jobs: List<Job>,
+    val useId: String
 ) : Serializable

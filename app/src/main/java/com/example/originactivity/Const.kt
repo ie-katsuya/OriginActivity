@@ -10,5 +10,6 @@ class Const{
         const val NameKEY = "name"          // Preferenceに表示名を保存する時のキー
         const val ContentsPATH = "contents" // Firebaseにタスクを保存するバス
         const val Favorite = "favorites" // Firebaseにタスクを保存するバス
+        const val Test = "test"
     }
 }

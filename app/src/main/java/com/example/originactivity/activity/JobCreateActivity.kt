@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.originactivity.R
+import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Task
 import kotlinx.android.synthetic.main.activity_add_job.*
@@ -34,6 +35,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private var mDay = 0
     private var date: String = ""
     private lateinit var task: Task
+
+    private lateinit var mAdapter: TaskDetailAdapter
 
     private val jobAPI = SetJobAPI()
 
@@ -95,7 +98,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         if (date.isEmpty()) {
-            // 日付が入力されていない時はエラーを表示するだけ
+            // パスワードが入力されていない時はエラーを表示するだけ
             Snackbar.make(v, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
             return
         }
@@ -103,8 +106,12 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         val calendar = GregorianCalendar(mYear, mMonth, mDay)
         val date = calendar.time
 
-        jobAPI.setJob(task.taskId, title, date.time)
+        jobAPI.setJob(task.taskId, title, date.time) { isResult ->
+            if (isResult) {
+                finish()
+            }
+        }
 
-        finish()
+
     }
 }

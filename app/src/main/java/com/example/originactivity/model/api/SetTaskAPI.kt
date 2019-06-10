@@ -7,10 +7,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.util.*
+import kotlin.collections.HashMap
 
 class SetTaskAPI : FirebaseAPI() {
 
     fun setTask(taskData: HashMap<String, Any>, callback: (Boolean) -> Unit) {
+
+        val list2 = HashMap<String, String>()
+        val testRef = firebaseReference.child(Const.Test)
+        testRef.push().setValue("test", list2)
 
         val taskRef = firebaseReference
             .child(Const.ContentsPATH)

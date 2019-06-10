@@ -71,7 +71,7 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
             mTaskList = mOriginTaskList.map { it } //リストの実体コピー
         }else {
             mTaskList = mOriginTaskList.filter { task ->
-                task.title == keyWord
+                task.title.contains(keyWord) //== keyWord
             }
         }
         notifyDataSetChanged()
