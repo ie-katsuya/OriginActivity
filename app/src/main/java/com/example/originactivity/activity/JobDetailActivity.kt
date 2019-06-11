@@ -4,34 +4,52 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.TextView
 import com.example.originactivity.R
 import com.example.originactivity.model.entity.Job
-import com.example.originactivity.model.entity.Task
+import kotlinx.android.synthetic.main.activity_job_detail.*
+import java.text.SimpleDateFormat
 
-class JobDetailActivity : AppCompatActivity() {
+class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
-        const val KEY_TASK = "KEY_TASK"
+        private const val KEY_TASK_ID = "KEY_TASK_ID"
+        const val KEY_JOB = "KEY_JOB"
 
-        fun createIntent(context: Context, job: Job): Intent {
+        fun createIntent(context: Context, taskId: String, job: Job?): Intent {
             return Intent(context, JobDetailActivity::class.java).also {
-                it.putExtra(KEY_TASK, job)
+                it.putExtra(KEY_TASK_ID, taskId)
+                it.putExtra(KEY_JOB, job)
             }
 
         }
     }
 
+    private lateinit var taskId: String
+    private var job: Job? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_detail)
 
-        val job = intent.getSerializableExtra(JobDetailActivity.KEY_TASK) as Job
-
+        taskId = intent.getStringExtra(KEY_TASK_ID)
+        job = intent.getSerializableExtra(KEY_JOB) as Job
 
         val titletextview: TextView = findViewById(R.id.job_textview)
-        titletextview.text = job.title
+        titletextview.text = job?.title
+
+        val sdf = SimpleDateFormat("yyyy年 M月 d日")
+        val date = job?.date
 
         val datetextview: TextView = findViewById(R.id.date_textview)
-        datetextview.text = job.date.toString()
+        datetextview.text = "完了予定日： " + sdf.format(date)
+
+        edit_button.setOnClickListener(this)
     }
+
+    override fun onClick(v: View?) {
+        //タスク作成画面に遷移
+        startActivity(JobCreateActivity.createIntent(this, taskId, job))
+    }
+
 }

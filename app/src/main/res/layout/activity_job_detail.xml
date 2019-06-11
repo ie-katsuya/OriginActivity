@@ -13,7 +13,8 @@
             android:id="@+id/job_textview"
             tools:text="内容"
             android:textSize="30sp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="100dp"
+            android:gravity="center_horizontal"
             android:layout_above="@+id/date_textview"/>
 
     <TextView
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/date_textview"
             tools:text="2019/05/21"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
 
@@ -30,8 +31,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/user_textview"
             tools:text="ユーザー名"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:layout_marginTop="70dp"
+            android:gravity="center_horizontal"
             android:layout_below="@+id/date_textview"/>
 
     <Button

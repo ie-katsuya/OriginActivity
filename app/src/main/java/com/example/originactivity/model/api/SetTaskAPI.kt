@@ -1,21 +1,14 @@
 package com.example.originactivity.model.api
 
 import com.example.originactivity.Const
-import com.example.originactivity.model.entity.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.*
-import kotlin.collections.HashMap
 
 class SetTaskAPI : FirebaseAPI() {
 
     fun setTask(taskData: HashMap<String, Any>, callback: (Boolean) -> Unit) {
-
-        val list2 = HashMap<String, String>()
-        val testRef = firebaseReference.child(Const.Test)
-        testRef.push().setValue("test", list2)
 
         val taskRef = firebaseReference
             .child(Const.ContentsPATH)
@@ -34,13 +27,18 @@ class SetTaskAPI : FirebaseAPI() {
             if (error != null) {
                 return@setValue
             }
-            //taskRef.child(taskIdkey).child(Const.TaskUsers).push().setValue()
-            taskData["title"]?.let {
-                reloadId(taskIdkey, it) { isResult ->
-                    if (!isResult) {
-                        return@reloadId
+            userSave(taskIdkey) { isResult ->
+                if (!isResult) {
+                    return@userSave
+                }
+
+                taskData["title"]?.let {
+                    reloadId(taskIdkey, it) { isResult ->
+                        if (!isResult) {
+                            return@reloadId
+                        }
+                        callback(true)
                     }
-                    callback(true)
                 }
             }
         }
@@ -70,7 +68,33 @@ class SetTaskAPI : FirebaseAPI() {
             }
 
         })
+    }
 
+    fun userSave(taskIdkey: String, complete: (Boolean) -> Unit) {
+
+        val dataBaseReference = FirebaseDatabase.getInstance().reference
+        val userRef = dataBaseReference
+            .child(Const.ContentsPATH)
+            .child(taskIdkey)
+            .child(Const.UsersPATH)
+            .push()
+
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                userRef.setValue(user!!.uid) { error, detabaseReference ->
+                    val isResult: Boolean = if (error != null) {
+                        false
+                    } else {
+                        true
+                    }
+                    complete(isResult)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
 
 }

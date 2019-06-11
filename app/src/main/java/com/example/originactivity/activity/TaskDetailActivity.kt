@@ -35,7 +35,6 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
-    val jobList = mutableListOf<Job>()
 
     private val jobAPI = GetJobAPI()
 
@@ -58,7 +57,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         //ジョブ追加画面に遷移
-        startActivity(JobCreateActivity.createIntent(this, task))
+        startActivity(JobCreateActivity.createIntent(this, task.taskId, null))
     }
 
     private fun setValue() {
@@ -84,7 +83,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
             // jobのインスタンスを渡して質問詳細画面を起動する
-            startActivity(JobDetailActivity.createIntent(this, mAdapter.getJob(position)))
+            startActivity(JobDetailActivity.createIntent(this, task.taskId, mAdapter.getJob(position)))
         }
 
         // ListViewを長押ししたときの処理
