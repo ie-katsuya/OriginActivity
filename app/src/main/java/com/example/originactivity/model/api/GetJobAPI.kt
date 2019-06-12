@@ -22,8 +22,10 @@ class GetJobAPI : FirebaseAPI() {
                 }
 
                 override fun onDataChange(datasnapshot: DataSnapshot) {
-                    //getJobItem(datasnapshot, callback)
+                    getJobItem(datasnapshot, callback)
+                    contentRef.removeEventListener(this)
 
+                    /*
                     //関与しているタスクをリストに表示
                     val jobIdList = mutableListOf<String>()
                     datasnapshot.children.forEach { item ->
@@ -33,11 +35,12 @@ class GetJobAPI : FirebaseAPI() {
 
                     val jobList = mutableListOf<Job>()
 
-                    val favoriteTask = datasnapshot.toJob()
-                    jobList.add(favoriteTask)
+                    val job = datasnapshot.toJob()
+                    jobList.add(job)
                     callback(jobList)
 
                     contentRef.removeEventListener(this)
+                    */
                 }
             }
         )
@@ -54,8 +57,8 @@ class GetJobAPI : FirebaseAPI() {
         var currentCount = 0L
         val jobList = mutableListOf<Job>()
 
-        val favoriteTask = datasnapshot.toJob()
-        jobList.add(favoriteTask)
+        val job = datasnapshot.toJob()
+        jobList.add(job)
         if (currentCount >= totalCount) {
             callback(jobList)
         }

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_add_job.*
 import kotlinx.android.synthetic.main.activity_task_create.Buck_button
 import kotlinx.android.synthetic.main.activity_task_create.Decide_button
 import kotlinx.android.synthetic.main.activity_task_create.date_button
+import java.text.SimpleDateFormat
 import java.util.*
 
 class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
@@ -33,7 +34,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private var mYear = 0
     private var mMonth = 0
     private var mDay = 0
-    private var date: String = ""
+    private var stringDate: String = ""
+    private var longDate = 0L
     private lateinit var taskId: String
     private var job: Job? = null
     private var title: String = ""
@@ -50,7 +52,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
                 val dateString =
                     mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("%02d", mDay)
                 date_button.text = dateString
-                date = date_button.text.toString()
+                stringDate = date_button.text.toString()
             }, mYear, mMonth, mDay
         )
         datePickerDialog.show()
@@ -63,18 +65,21 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job?
 
-        if (job == null) {
-            //カレンダーの初期設定を現在の日付に
-            val calendar = Calendar.getInstance()
-            mYear = calendar.get(Calendar.YEAR)
-            mMonth = calendar.get(Calendar.MONTH)
-            mDay = calendar.get(Calendar.DAY_OF_MONTH)
-        } else {
+        if (job != null) {
             job_Edit.setText(job!!.title)
+            title = job!!.title
 
-            //カレンダーの初期設定を現在の日付に
-            val calendar = Calendar.getInstance()
+            val sdf = SimpleDateFormat("yyyy年 M月 d日")
+            longDate = job!!.date
+            date_button.text = sdf.format(longDate)
         }
+
+        //カレンダーの初期設定を現在の日付に
+        val calendar = Calendar.getInstance()
+        mYear = calendar.get(Calendar.YEAR)
+        mMonth = calendar.get(Calendar.MONTH)
+        mDay = calendar.get(Calendar.DAY_OF_MONTH)
+
         date_button.setOnClickListener(mOnDateClickListener)
         Decide_button.setOnClickListener(this)
         Buck_button.setOnClickListener(this)
@@ -104,7 +109,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        if (date.isEmpty()) {
+        if (stringDate.isEmpty()) {
             // パスワードが入力されていない時はエラーを表示するだけ
             Snackbar.make(v, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
             return

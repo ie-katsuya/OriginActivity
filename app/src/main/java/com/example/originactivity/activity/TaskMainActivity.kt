@@ -29,15 +29,12 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TasklistAdapter
 
-    private val taskAPI = GetTaskAPI()
+    private val gettaskAPI = GetTaskAPI()
     private var isChildEventEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-
         setupListView()
 
         //リストをタッチした処理
@@ -81,7 +78,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mListView.adapter = mAdapter
 
-        taskAPI.getTask {
+        gettaskAPI.getTask {
             mAdapter.setTaskList(it)
             isChildEventEnabled = true
         }
@@ -136,17 +133,23 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
             .child(user!!.uid)
             .child(task.taskId)
 
+        var deleteUsersRef = FirebaseDatabase.getInstance().reference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+            .child(Const.UsersPATH)
+
         deleteRef.removeValue()
         deleteFavoriteRef.removeValue()
+        deleteUsersRef.removeValue()
 
-        taskAPI.getTask {
+        gettaskAPI.getTask {
             mAdapter.setTaskList(it)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        taskAPI.getTask {
+        gettaskAPI.getTask {
             mAdapter.setTaskList(it)
         }
     }

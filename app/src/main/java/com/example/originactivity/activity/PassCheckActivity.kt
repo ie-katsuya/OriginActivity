@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.originactivity.R
+import com.example.originactivity.model.api.GetTaskAPI
+import com.example.originactivity.model.api.SetTaskAPI
 import com.example.originactivity.model.entity.Task
 import kotlinx.android.synthetic.main.activity_pass_check.*
 
@@ -20,9 +22,10 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
             return Intent(context, PassCheckActivity::class.java).also {
                 it.putExtra(KEY_TASK, task)
             }
-
         }
     }
+
+    private val settaskAPI = SetTaskAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,16 +49,30 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun registrationPass(v: View) {
-        val pass = pass_pass.text.toString()
-
-        if (pass == task.pass) {
-            startActivity(TaskDetailActivity.createIntent(this, task))
-        } else {
+        if (pass_pass.text.toString() != task.pass) {
             // タイトルが入力されていない時はエラーを表示するだけ
             Snackbar.make(v, "パスワードが間違っています", Snackbar.LENGTH_LONG).show()
             return
         }
 
+        taskAuthentication{
+            startActivity(TaskDetailActivity.createIntent(this, task))
+        }
     }
 
+    //タスクにユーザーを登録、タスクをお気に入りにする
+    private fun taskAuthentication(complete: ()->Unit) {
+        settaskAPI.userSave(task.taskId) { isUserSaveResult ->
+            if (!isUserSaveResult) {
+                return@userSave
+            }
+            settaskAPI.favoriteSave(task.title, task.taskId) { isFavoriteSaveResult ->
+                if (!isFavoriteSaveResult) {
+                    return@favoriteSave
+                }
+                complete()
+            }
+
+        }
+    }
 }

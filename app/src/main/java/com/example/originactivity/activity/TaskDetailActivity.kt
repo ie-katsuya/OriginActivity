@@ -15,6 +15,9 @@ import com.example.originactivity.model.api.GetJobAPI
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_task_detail.*
 
@@ -29,12 +32,12 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
             return Intent(context, TaskDetailActivity::class.java).also {
                 it.putExtra(KEY_TASK, task)
             }
-
         }
     }
 
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
+    private val firebaseReference = FirebaseDatabase.getInstance().reference
 
     private val jobAPI = GetJobAPI()
 
@@ -77,8 +80,15 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         mAdapter.setJobList(task.jobs)
 
+        val jobRef = firebaseReference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+            .child(Const.JobPATH)
+
+        jobRef.addChildEventListener(mEventListener)
     }
 
+    // ListViewをタップしたときの処理
     private fun ListTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
@@ -131,16 +141,27 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private val mEventListener = object : ChildEventListener {
+        override fun onCancelled(p0: DatabaseError) {
+        }
 
-//        jobAPI.getJob(task.taskId) {
-//            mAdapter.setJobList(it)
-//        }
-        mAdapter.setJobList(task.jobs)
-    }
+        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+        }
 
-    private fun setUsers(){
+        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+        }
+
+        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+            jobAPI.getJob(task.taskId) {
+                mAdapter.setJobList(it)
+            }
+        }
+
+        override fun onChildRemoved(p0: DataSnapshot) {
+            jobAPI.getJob(task.taskId) {
+                mAdapter.setJobList(it)
+            }
+        }
 
     }
 }

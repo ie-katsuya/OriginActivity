@@ -62,7 +62,7 @@ class GetTaskAPI : FirebaseAPI() {
         }
     }
 
-    fun getTaskAll(callback: (List<Task>) -> Unit) {
+    fun getTaskSearch(callback: (List<Task>) -> Unit) {
 
         val contentRef = firebaseReference
             .child(Const.ContentsPATH)
@@ -107,7 +107,24 @@ class GetTaskAPI : FirebaseAPI() {
         )
     }
 
-    private fun searchTask(taskId: String) {
+    fun sameTask(taskId: String, complete: (Boolean) -> Unit) {
+        val favoriteRef = firebaseReference
+            .child(Const.Favorite)
+            .child(user!!.uid)
 
+        favoriteRef.equalTo(taskId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                favoriteRef.removeEventListener(this)
+                if(dataSnapshot.childrenCount != 0L){
+                    complete(true)
+                }else{
+                    complete(false)
+                }
+
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
 }

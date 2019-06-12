@@ -3,7 +3,6 @@ package com.example.originactivity.model.api
 import com.example.originactivity.Const
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class SetTaskAPI : FirebaseAPI() {
@@ -15,13 +14,6 @@ class SetTaskAPI : FirebaseAPI() {
             .push()
 
         val taskIdkey: String = taskRef.getKey()!!
-
-        val userRef = firebaseReference
-            .child(Const.UsersPATH).child(user!!.uid)
-
-        val udata = HashMap<String, String>()
-
-        //udata["name"] = userRef.
 
         taskRef.setValue(taskData) { error, detabaseReference ->
             if (error != null) {
@@ -47,8 +39,7 @@ class SetTaskAPI : FirebaseAPI() {
     fun reloadId(taskIdkey: String, title: Any, complete: (Boolean) -> Unit) {
 
         val fdata = HashMap<String, Any>()
-        val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val favoriteRef = dataBaseReference.child(Const.Favorite).child(user!!.uid)
+        val favoriteRef = firebaseReference.child(Const.Favorite).child(user!!.uid)
 
         favoriteRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -72,8 +63,7 @@ class SetTaskAPI : FirebaseAPI() {
 
     fun userSave(taskIdkey: String, complete: (Boolean) -> Unit) {
 
-        val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val userRef = dataBaseReference
+        val userRef = firebaseReference
             .child(Const.ContentsPATH)
             .child(taskIdkey)
             .child(Const.UsersPATH)
@@ -97,4 +87,30 @@ class SetTaskAPI : FirebaseAPI() {
         })
     }
 
+    fun favoriteSave(title: String, taskIdkey: String, complete: (Boolean) -> Unit) {
+        val fdata = HashMap<String, Any>()
+        fdata["title"] = title
+
+        val favoriteRef = firebaseReference
+            .child(Const.Favorite)
+            .child(user!!.uid)
+            .child(taskIdkey)
+
+        favoriteRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                favoriteRef.setValue(fdata) { error, detabaseReference ->
+                    val isResult: Boolean = if (error != null) {
+                        false
+                    } else {
+                        true
+                    }
+                    complete(isResult)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+    }
 }

@@ -38,6 +38,7 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         val titletextview: TextView = findViewById(R.id.job_textview)
         titletextview.text = job?.title
 
+        //日付のフォーマット設定
         val sdf = SimpleDateFormat("yyyy年 M月 d日")
         val date = job?.date
 
@@ -45,11 +46,19 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         datetextview.text = "完了予定日： " + sdf.format(date)
 
         edit_button.setOnClickListener(this)
+        back_button.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-        //タスク作成画面に遷移
-        startActivity(JobCreateActivity.createIntent(this, taskId, job))
+    override fun onClick(v: View) {
+        when (v.id) {
+            back_button.id -> {
+                finish()
+            }
+            else -> {
+                //タスク作成画面に遷移
+                startActivity(JobCreateActivity.createIntent(this, taskId, job))
+            }
+        }
     }
 
 }

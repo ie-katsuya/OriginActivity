@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
@@ -23,7 +22,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TasklistAdapter
 
-    private val taskAPI = GetTaskAPI()
+    private val gettaskAPI = GetTaskAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +31,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         setupListView()
 
         //リストをタッチした処理
-        ListTouch()
+        listTouch()
 
         searchButton.setOnClickListener(this)
     }
@@ -50,18 +49,25 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mListView.adapter = mAdapter
 
-
-        taskAPI.getTaskAll { taskList ->
+        gettaskAPI.getTaskSearch { taskList ->
             mAdapter.setTaskList(taskList)
         }
 
     }
 
-    private fun ListTouch() {
+    private fun listTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
-            // Taskのインスタンスを渡して質問詳細画面を起動する
-            startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
+
+            gettaskAPI.sameTask(mAdapter.getTask(position).taskId) { isResult ->
+                if (isResult) {
+                    //Favoriteに登録していたら、詳細画面へ
+                    startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
+                }else{
+                    //Favoriteになかったら、パスワードチェック画面へ
+                    startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
+                }
+            }
         }
     }
 
