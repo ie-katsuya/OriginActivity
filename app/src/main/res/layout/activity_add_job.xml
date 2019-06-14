@@ -31,18 +31,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/spinner_userid"
             android:text="----/--/--"
             style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <Spinner
+            android:id="@+id/spinner_userid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:hint="カテゴリー" />
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="50dp"
             android:text="決定"
             android:id="@+id/Decide_button"
-            android:layout_below="@+id/date_button"/>
+            android:layout_below="@+id/spinner_userid"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

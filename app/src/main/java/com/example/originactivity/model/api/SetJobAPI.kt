@@ -26,5 +26,25 @@ class SetJobAPI : FirebaseAPI() {
         }
     }
 
+    fun updateJob(taskId: String, title: String, date: Long, jobId: String,callback: (Boolean) -> Unit) {
+
+        val jobRef = firebaseReference
+            .child(Const.ContentsPATH)
+            .child(taskId)
+            .child(Const.JobPATH)
+            .child(jobId)
+
+        val jobData = HashMap<String, Any>()
+
+        jobData["title"] = title
+        jobData["date"] = date
+
+        jobRef.updateChildren(jobData) { error, detabaseReference ->
+            if (error != null) {
+                return@updateChildren
+            }
+            callback(true)
+        }
+    }
 
 }

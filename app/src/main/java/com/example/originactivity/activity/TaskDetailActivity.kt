@@ -5,23 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.ListView
 import android.widget.TextView
 import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.GetJobAPI
+import com.example.originactivity.model.api.SyncJobAPI
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_task_detail.*
 
-class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
+class TaskDetailActivity : AppCompatActivity() {
 
     private lateinit var task: Task
 
@@ -37,39 +34,58 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
-    private val firebaseReference = FirebaseDatabase.getInstance().reference
 
     private val jobAPI = GetJobAPI()
+
+    private val syncJobAPI by lazy { SyncJobAPI(task.taskId)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
-
         task = intent.getSerializableExtra(KEY_TASK) as Task
 
-        //setUsers()
+        initView()
+    }
 
-        setValue()
+    override fun onDestroy() {
+        super.onDestroy()
+
+        syncJobAPI.callback = {}
+    }
+
+    private fun initView() {
+        syncJobAPI.callback = {job ->
+            //
+        }
+
+        updateTitleLabel()
+        updateGoalLabel()
 
         setupListView()
 
-        ListTouch()
+        setListClickListener()
 
-        add_button.setOnClickListener(this)
+        add_button.setOnClickListener {
+            //ジョブ追加画面に遷移
+            startActivity(JobCreateActivity.createIntent(this, task.taskId, null))
+        }
+
+        backmain_button.setOnClickListener {
+            //メイン画面に遷移
+            startActivity(TaskMainActivity.createIntent(this))
+        }
     }
 
-    override fun onClick(v: View?) {
-        //ジョブ追加画面に遷移
-        startActivity(JobCreateActivity.createIntent(this, task.taskId, null))
-    }
-
-    private fun setValue() {
+    private fun updateTitleLabel() {
         val titletextview: TextView = findViewById(R.id.title_textview)
         titletextview.text = task.title
+    }
 
+    private fun updateGoalLabel() {
         val goaltextview: TextView = findViewById(R.id.goal_textview)
         goaltextview.text = task.goal
     }
+
 
     private fun setupListView() {
         // ListViewの準備
@@ -79,17 +95,10 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         mListView.adapter = mAdapter
 
         mAdapter.setJobList(task.jobs)
-
-        val jobRef = firebaseReference
-            .child(Const.ContentsPATH)
-            .child(task.taskId)
-            .child(Const.JobPATH)
-
-        jobRef.addChildEventListener(mEventListener)
     }
 
     // ListViewをタップしたときの処理
-    private fun ListTouch() {
+    private fun setListClickListener() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
             // jobのインスタンスを渡して質問詳細画面を起動する
@@ -124,7 +133,7 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    //後ほどAPI化
+    //TODO: 後ほどAPI化
     private fun deleteJob(job: Job) {
         // ログイン済みのユーザーを取得する
         val user = FirebaseAuth.getInstance().currentUser
@@ -141,27 +150,16 @@ class TaskDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private val mEventListener = object : ChildEventListener {
-        override fun onCancelled(p0: DatabaseError) {
-        }
+    override fun onResume() {
+        super.onResume()
 
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-        }
-
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-        }
-
-        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-            jobAPI.getJob(task.taskId) {
-                mAdapter.setJobList(it)
-            }
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot) {
-            jobAPI.getJob(task.taskId) {
-                mAdapter.setJobList(it)
-            }
-        }
-
+        syncJobAPI.syncStart()
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        syncJobAPI.syncStop()
+    }
+
 }

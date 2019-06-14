@@ -8,7 +8,10 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.Spinner
 import com.example.originactivity.R
+import com.example.originactivity.adapter.CustumAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_add_job.*
@@ -39,9 +42,15 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var taskId: String
     private var job: Job? = null
     private var title: String = ""
+    private var updateflag: Boolean = false
 
     private val jobAPI = SetJobAPI()
 
+    private var spinnerAdapter = CustumAdapter()
+    private var spinnerItems: MutableList<String> = mutableListOf()
+    private var selectUserId: String = ""
+
+    //時間設定
     private val mOnDateClickListener = View.OnClickListener {
         val datePickerDialog = DatePickerDialog(
             this,
@@ -66,12 +75,30 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         job = intent.getSerializableExtra(KEY_JOB) as Job?
 
         if (job != null) {
+            updateflag = true
             job_Edit.setText(job!!.title)
             title = job!!.title
 
             val sdf = SimpleDateFormat("yyyy年 M月 d日")
             longDate = job!!.date
             date_button.text = sdf.format(longDate)
+        }
+
+        //spinnerを操作した時
+        spinner_userid.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            //　アイテムが選択された時
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?, position: Int, id: Long
+            ) {
+                var spinnerParent = parent as Spinner
+                selectUserId = spinnerParent.selectedItem as String
+            }
+
+            //　アイテムが選択されなかった
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
 
         //カレンダーの初期設定を現在の日付に
@@ -118,12 +145,19 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         val calendar = GregorianCalendar(mYear, mMonth, mDay)
         var date = calendar.time
 
-        jobAPI.setJob(taskId, title, date.time) { isResult ->
-            if (isResult) {
-                finish()
+        if (updateflag == true) {
+            jobAPI.updateJob(taskId, title, date.time, job!!.jobId) { isupdateResult ->
+                if (isupdateResult) {
+                    finish()
+                }
+            }
+        } else {
+            jobAPI.setJob(taskId, title, date.time) { issetValueResult ->
+                if (issetValueResult) {
+                    finish()
+                }
             }
         }
-
-
     }
+
 }

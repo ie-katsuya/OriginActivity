@@ -94,7 +94,8 @@ class GetTaskAPI : FirebaseAPI() {
             val value = it.value as? HashMap<String, Any> ?: return@forEach
             val jobTitle = value["title"] as? String ?: ""
             val jobDate = value["date"] as? Long ?: 0L
-            jobs.add(Job(jobTitle, jobDate))
+            val jobId = it.key ?: ""
+            jobs.add(Job(jobTitle, jobDate, jobId))
         }
         return Task(
             title,

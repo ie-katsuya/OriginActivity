@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 
 class TaskDetailAdapter(context: Context) : BaseAdapter() {
     private var mLayoutInflater: LayoutInflater
-    private var mJobArrayList: List<Job> = emptyList()
+    private var mJobArrayList: MutableList<Job> = mutableListOf()
 
     init {
         mLayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -49,10 +49,21 @@ class TaskDetailAdapter(context: Context) : BaseAdapter() {
         return view
     }
 
+    //
+    fun addJob(job: Job){
+        // mJobArrayListをループで回す
+        //jobが含まれていなければjobを追加する
+        for(value in mJobArrayList){
+
+        }
+
+        this.notifyDataSetChanged()
+    }
+
     fun setJobList(JobArrayList: List<Job>) {
         mJobArrayList = JobArrayList.sortedWith(Comparator{a, b ->
             if (a.date > b.date) 1 else -1 //正数：昇順　負数：降順
-        })
+        }).toMutableList()
         this.notifyDataSetChanged()
     }
 
