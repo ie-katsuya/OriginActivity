@@ -32,7 +32,7 @@ class SyncJobAPI(taskId: String) : FirebaseAPI() {
         override fun onChildMoved(p0: DataSnapshot, p1: String?) {
         }
 
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+        override fun onChildChanged(datasnapshot: DataSnapshot, p1: String?) {
         }
 
         override fun onChildAdded(datasnapshot: DataSnapshot, p1: String?) {
@@ -40,8 +40,7 @@ class SyncJobAPI(taskId: String) : FirebaseAPI() {
             callback(job)
         }
 
-        override fun onChildRemoved(p0: DataSnapshot) {
-
+        override fun onChildRemoved(datasnapshot: DataSnapshot) {
         }
 
     }

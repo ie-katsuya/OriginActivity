@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.originactivity.model.entity.Job
-import com.example.originactivity.model.entity.Task
 import java.text.SimpleDateFormat
 
 class TaskDetailAdapter(context: Context) : BaseAdapter() {
@@ -50,18 +49,16 @@ class TaskDetailAdapter(context: Context) : BaseAdapter() {
     }
 
     //
-    fun addJob(job: Job){
-        // mJobArrayListをループで回す
-        //jobが含まれていなければjobを追加する
-        for(value in mJobArrayList){
-
+    fun addJob(job: Job) {
+        //追加するジョブが無ければ新しく追加する
+        if (mJobArrayList.filter { listItem -> listItem.jobId == job.jobId }.isEmpty()) {
+            mJobArrayList.add(job)
+            notifyDataSetChanged()
         }
-
-        this.notifyDataSetChanged()
     }
 
     fun setJobList(JobArrayList: List<Job>) {
-        mJobArrayList = JobArrayList.sortedWith(Comparator{a, b ->
+        mJobArrayList = JobArrayList.sortedWith(Comparator { a, b ->
             if (a.date > b.date) 1 else -1 //正数：昇順　負数：降順
         }).toMutableList()
         this.notifyDataSetChanged()

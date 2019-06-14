@@ -55,7 +55,7 @@ class TaskDetailActivity : AppCompatActivity() {
 
     private fun initView() {
         syncJobAPI.callback = {job ->
-            //
+            mAdapter.addJob(job)
         }
 
         updateTitleLabel()

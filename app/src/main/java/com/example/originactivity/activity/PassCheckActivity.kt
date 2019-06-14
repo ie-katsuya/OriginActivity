@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.ListView
 import com.example.originactivity.R
-import com.example.originactivity.model.api.GetTaskAPI
+import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.SetTaskAPI
 import com.example.originactivity.model.entity.Task
 import kotlinx.android.synthetic.main.activity_pass_check.*
@@ -26,6 +27,8 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val settaskAPI = SetTaskAPI()
+    private lateinit var mListView: ListView
+    private lateinit var mAdapter: TaskDetailAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,7 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
             else -> {
+
                 registrationPass(v)
             }
         }
@@ -55,22 +59,24 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        taskAuthentication{
+        taskAuthentication {
             startActivity(TaskDetailActivity.createIntent(this, task))
         }
     }
 
     //タスクにユーザーを登録、タスクをお気に入りにする
-    private fun taskAuthentication(complete: ()->Unit) {
-        settaskAPI.userSave(task.taskId) { isUserSaveResult ->
-            if (!isUserSaveResult) {
-                return@userSave
+    private fun taskAuthentication(complete: () -> Unit) {
+        settaskAPI.favoriteSave(task.title, task.taskId) { isFavoriteSaveResult ->
+            if (!isFavoriteSaveResult) {
+                return@favoriteSave
             }
-            settaskAPI.favoriteSave(task.title, task.taskId) { isFavoriteSaveResult ->
-                if (!isFavoriteSaveResult) {
-                    return@favoriteSave
+
+            settaskAPI.userSave(task.taskId) { isUserSaveResult ->
+                if (!isUserSaveResult) {
+                    return@userSave
                 }
                 complete()
+
             }
 
         }

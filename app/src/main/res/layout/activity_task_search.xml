@@ -23,7 +23,8 @@
             android:text=""
             android:id="@+id/search_edit"
             android:layout_margin="16dp"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:inputType="text"/>
 
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -12,12 +12,8 @@ import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.model.api.SetTaskAPI
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_task_create.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -119,8 +115,8 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
             tdata["pass"] = pass
             tdata["date"] = date.time
 
-            taskAPI.setTask(tdata){isResult ->
-                if(isResult){
+            taskAPI.setTask(tdata) { isResult ->
+                if (isResult) {
                     finish()
                 }
             }

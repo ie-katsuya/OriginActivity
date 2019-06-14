@@ -3,6 +3,7 @@ package com.example.originactivity.model.api
 import com.example.originactivity.Const
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
+import com.example.originactivity.model.entity.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -97,6 +98,13 @@ class GetTaskAPI : FirebaseAPI() {
             val jobId = it.key ?: ""
             jobs.add(Job(jobTitle, jobDate, jobId))
         }
+        val user = map.get("useId") as? HashMap<String, String>
+        val users = mutableListOf<User>()
+        user?.forEach {
+            val value = it.value as? HashMap<String, String> ?: return@forEach
+            val userId = value["userId"] ?: ""
+            users.add(user(userId))
+        }
         return Task(
             title,
             pass,
@@ -104,7 +112,7 @@ class GetTaskAPI : FirebaseAPI() {
             date,
             taskUid,
             jobs,
-            user!!.uid
+            users
         )
     }
 

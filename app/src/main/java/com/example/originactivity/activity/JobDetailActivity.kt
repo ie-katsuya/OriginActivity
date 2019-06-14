@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.ListView
 import android.widget.TextView
 import com.example.originactivity.R
+import com.example.originactivity.adapter.TaskDetailAdapter
+import com.example.originactivity.model.api.GetJobAPI
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_job_detail.*
 import java.text.SimpleDateFormat
@@ -24,7 +27,6 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         }
     }
-
     private lateinit var taskId: String
     private var job: Job? = null
 
@@ -61,4 +63,9 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+
+    }
 }
