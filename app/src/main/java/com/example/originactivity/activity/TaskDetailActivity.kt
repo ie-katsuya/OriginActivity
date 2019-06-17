@@ -11,6 +11,7 @@ import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TaskDetailAdapter
 import com.example.originactivity.model.api.GetJobAPI
+import com.example.originactivity.model.api.GetTaskAPI
 import com.example.originactivity.model.api.SyncJobAPI
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
@@ -154,6 +155,12 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onResume()
 
         syncJobAPI.syncStart()
+        setupListView()
+
+        //編集中
+        jobAPI.getChangeJob(task.taskId, task.jobs) {
+            mAdapter.setJobList(it)
+        }
     }
 
     override fun onPause() {

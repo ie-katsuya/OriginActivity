@@ -9,6 +9,7 @@ import android.widget.ListView
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.GetTaskAPI
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_task_search.*
 
 class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
@@ -23,6 +24,9 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mAdapter: TasklistAdapter
 
     private val gettaskAPI = GetTaskAPI()
+
+    // ログイン済みのユーザーを取得する
+    protected val user = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,15 +62,14 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
     private fun listTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
+           val sameUserflag = mAdapter.userFilter(user!!.uid, position)
 
-            gettaskAPI.sameTask(mAdapter.getTask(position).taskId) { isResult ->
-                if (isResult) {
-                    //Favoriteに登録していたら、詳細画面へ
-                    startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
-                }else{
-                    //Favoriteになかったら、パスワードチェック画面へ
-                    startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
-                }
+            if (sameUserflag) {
+                //Favoriteに登録していたら、詳細画面へ
+                startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
+            }else{
+                //Favoriteになかったら、パスワードチェック画面へ
+                startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
             }
         }
     }

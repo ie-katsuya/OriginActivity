@@ -48,7 +48,6 @@ class TaskDetailAdapter(context: Context) : BaseAdapter() {
         return view
     }
 
-    //
     fun addJob(job: Job) {
         //追加するジョブが無ければ新しく追加する
         if (mJobArrayList.filter { listItem -> listItem.jobId == job.jobId }.isEmpty()) {

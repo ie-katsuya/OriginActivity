@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Spinner
 import com.example.originactivity.R
-import com.example.originactivity.adapter.CustumAdapter
+import com.example.originactivity.adapter.CustumSpinnerAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_add_job.*
@@ -46,7 +46,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     private val jobAPI = SetJobAPI()
 
-    private var spinnerAdapter = CustumAdapter()
+    private lateinit var mUserAdapter: CustumSpinnerAdapter
+    private var spinnerAdapter = CustumSpinnerAdapter()
     private var spinnerItems: MutableList<String> = mutableListOf()
     private var selectUserId: String = ""
 
@@ -83,6 +84,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
             longDate = job!!.date
             date_button.text = sdf.format(longDate)
         }
+
+        //setSpinner()
 
         //spinnerを操作した時
         spinner_userid.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -121,6 +124,17 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
                 registrationJob(v)
             }
         }
+    }
+
+    private fun setSpinner() {
+
+        // spinner に adapter をセット
+        spinner_userid.adapter = spinnerAdapter
+        spinnerAdapter.userList = spinnerItems
+
+        //spinnerにカテゴリーをセット
+        // タスクに参加しているユーザーnameをセット
+        //val categoryRefineResults =
     }
 
     private fun registrationJob(v: View) {

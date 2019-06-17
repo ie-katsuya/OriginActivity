@@ -71,7 +71,6 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
         im.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
         val dataBaseReference = FirebaseDatabase.getInstance().reference
-        val taskRef = dataBaseReference.child(Const.ContentsPATH)
 
         val tdata = HashMap<String, Any>()
 

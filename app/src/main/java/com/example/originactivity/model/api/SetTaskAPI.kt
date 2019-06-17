@@ -63,13 +63,17 @@ class SetTaskAPI : FirebaseAPI() {
 
     fun userSave(taskIdkey: String, complete: (Boolean) -> Unit) {
 
+        val udata = HashMap<String, Any>()
+
         val userRef = firebaseReference
             .child(Const.ContentsPATH)
             .child(taskIdkey)
             .child(Const.UsersPATH)
             .push()
 
-        userRef.setValue(user!!.uid) { error, detabaseReference ->
+        udata["userId"] = user!!.uid
+
+        userRef.setValue(udata) { error, detabaseReference ->
             val isResult: Boolean = if (error != null) {
                 false
             } else {

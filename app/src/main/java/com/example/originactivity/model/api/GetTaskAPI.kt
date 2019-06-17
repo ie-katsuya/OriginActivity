@@ -89,6 +89,7 @@ class GetTaskAPI : FirebaseAPI() {
         val goal = map.get("goal") as? String ?: ""
         val date = map.get("date") as? Long ?: 0L
         val taskUid = this.key ?: ""
+
         val job = map.get("job") as? HashMap<String, Any>
         val jobs = mutableListOf<Job>()
         job?.forEach {
@@ -98,13 +99,16 @@ class GetTaskAPI : FirebaseAPI() {
             val jobId = it.key ?: ""
             jobs.add(Job(jobTitle, jobDate, jobId))
         }
-        val user = map.get("useId") as? HashMap<String, String>
-        val users = mutableListOf<User>()
-        user?.forEach {
-            val value = it.value as? HashMap<String, String> ?: return@forEach
-            val userId = value["userId"] ?: ""
-            users.add(user(userId))
+
+        val inputUsers = map.get("users") as? HashMap<String, String>
+        val outputUsers = mutableListOf<User>()
+        //Firebaseから取得した連想配列をユーザーリストに変換
+        inputUsers?.forEach {user->
+            val value = user.value as? HashMap<String, String> ?: return@forEach
+            val userId = value["userId"]  ?: ""
+            outputUsers.add(User(userId))
         }
+
         return Task(
             title,
             pass,
@@ -112,28 +116,9 @@ class GetTaskAPI : FirebaseAPI() {
             date,
             taskUid,
             jobs,
-            users
+            outputUsers
         )
     }
 
-    fun sameTask(taskId: String, complete: (Boolean) -> Unit) {
-        val favoriteRef = firebaseReference
-            .child(Const.Favorite)
-            .child(user!!.uid)
 
-        favoriteRef.equalTo(taskId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                favoriteRef.removeEventListener(this)
-                if(dataSnapshot.childrenCount != 0L){
-                    complete(true)
-                }else{
-                    complete(false)
-                }
-
-            }
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-        })
-    }
 }

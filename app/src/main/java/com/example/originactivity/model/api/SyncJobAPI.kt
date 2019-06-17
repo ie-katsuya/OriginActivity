@@ -24,7 +24,6 @@ class SyncJobAPI(taskId: String) : FirebaseAPI() {
         jobRef.removeEventListener(mEventListener)
     }
 
-
     private val mEventListener = object : ChildEventListener {
         override fun onCancelled(p0: DatabaseError) {
         }

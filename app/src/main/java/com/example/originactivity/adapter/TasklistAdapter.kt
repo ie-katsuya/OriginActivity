@@ -77,5 +77,15 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
         notifyDataSetChanged()
     }
 
+    //タスクにユーザーが参加していたらパスチェックを行わない
+    fun userFilter(userId: String, position: Int): Boolean {
+        mTaskList[position].userId.forEach {user->
+            if(user.userId == userId) {
+                return true
+            }
+        }
+        return false
+    }
+
 }
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckedTextView
 
-class CustumAdapter: BaseAdapter(){
+class CustumSpinnerAdapter: BaseAdapter(){
     var userList: List<String> = emptyList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
