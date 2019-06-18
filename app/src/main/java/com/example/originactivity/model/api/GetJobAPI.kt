@@ -1,6 +1,5 @@
 package com.example.originactivity.model.api
 
-import android.util.Log
 import com.example.originactivity.Const
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.translater.JobTranslater
@@ -42,13 +41,15 @@ class GetJobAPI : FirebaseAPI() {
         val jobList = mutableListOf<Job>()
 
         val job = JobTranslater.dataSnapshotToJob(datasnapshot)
-        jobList.add(job)
-        if (currentCount >= totalCount) {
-            callback(jobList)
+        if(totalCount != 0L) {
+            jobList.add(job)
+            if (currentCount >= totalCount) {
+                callback(jobList)
+            }
         }
     }
 
-    fun getChangeJob(taskId: String, jobs: List<Job>, callback: (List<Job>) -> Unit) {
+    fun getChangeJob(taskId: String, callback: (List<Job>) -> Unit) {
         val contentRef = firebaseReference
             .child(Const.ContentsPATH)
             .child(taskId)

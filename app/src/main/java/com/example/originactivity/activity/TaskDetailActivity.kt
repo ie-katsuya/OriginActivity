@@ -155,10 +155,9 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onResume()
 
         syncJobAPI.syncStart()
-        setupListView()
 
         //編集中
-        jobAPI.getChangeJob(task.taskId, task.jobs) {
+        jobAPI.getChangeJob(task.taskId) {
             mAdapter.setJobList(it)
         }
     }

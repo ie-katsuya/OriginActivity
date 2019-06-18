@@ -105,8 +105,9 @@ class GetTaskAPI : FirebaseAPI() {
         //Firebaseから取得した連想配列をユーザーリストに変換
         inputUsers?.forEach {user->
             val value = user.value as? HashMap<String, String> ?: return@forEach
-            val userId = value["userId"]  ?: ""
-            outputUsers.add(User(userId))
+            val userId = user.key
+            val userName = value["name"]  ?: ""
+            outputUsers.add(User(userId, userName))
         }
 
         return Task(

@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.ListView
 import android.widget.Spinner
 import com.example.originactivity.R
 import com.example.originactivity.adapter.CustumSpinnerAdapter
+import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_add_job.*
@@ -49,7 +51,10 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mUserAdapter: CustumSpinnerAdapter
     private var spinnerAdapter = CustumSpinnerAdapter()
     private var spinnerItems: MutableList<String> = mutableListOf()
-    private var selectUserId: String = ""
+    private var selectUserName: String = ""
+
+    private lateinit var mListView: ListView
+    private lateinit var mAdapter: TasklistAdapter
 
     //時間設定
     private val mOnDateClickListener = View.OnClickListener {
@@ -95,7 +100,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
                 view: View?, position: Int, id: Long
             ) {
                 var spinnerParent = parent as Spinner
-                selectUserId = spinnerParent.selectedItem as String
+                selectUserName = spinnerParent.selectedItem as String
             }
 
             //　アイテムが選択されなかった
@@ -133,7 +138,6 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         spinnerAdapter.userList = spinnerItems
 
         //spinnerにカテゴリーをセット
-        // タスクに参加しているユーザーnameをセット
         //val categoryRefineResults =
     }
 

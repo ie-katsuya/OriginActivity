@@ -1,6 +1,7 @@
 package com.example.originactivity.model.api
 
 import com.example.originactivity.Const
+import com.example.originactivity.model.entity.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -62,25 +63,42 @@ class SetTaskAPI : FirebaseAPI() {
     }
 
     fun userSave(taskIdkey: String, complete: (Boolean) -> Unit) {
-
         val udata = HashMap<String, Any>()
 
         val userRef = firebaseReference
             .child(Const.ContentsPATH)
             .child(taskIdkey)
             .child(Const.UsersPATH)
-            .push()
+            .child(user!!.uid)
 
-        udata["userId"] = user!!.uid
+        val userNameRef = firebaseReference
+            .child(Const.UsersPATH)
+            .child(user!!.uid)
 
-        userRef.setValue(udata) { error, detabaseReference ->
-            val isResult: Boolean = if (error != null) {
-                false
-            } else {
-                true
+        userNameRef.addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //未使用
+                }
+
+                override fun onDataChange(datasnapshot: DataSnapshot) {
+                    getUserName(datasnapshot){user->
+                        udata["name"] = user
+
+                        userRef.setValue(udata) { error, detabaseReference ->
+                            val isResult: Boolean = if (error != null) {
+                                false
+                            } else {
+                                true
+                            }
+                            complete(isResult)
+                        }
+                    }
+                    userNameRef.removeEventListener(this)
+                }
             }
-            complete(isResult)
-        }
+        )
+
     }
 
     fun favoriteSave(title: String, taskIdkey: String, complete: (Boolean) -> Unit) {
@@ -108,5 +126,11 @@ class SetTaskAPI : FirebaseAPI() {
             }
 
         })
+    }
+
+    private fun getUserName(dataSnapshot: DataSnapshot, complete: (String)-> Unit){
+        val map = dataSnapshot.value as Map<String, Any>
+        val userName = map.get("name") as String
+        complete(userName)
     }
 }
