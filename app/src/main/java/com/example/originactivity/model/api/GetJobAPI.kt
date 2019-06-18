@@ -49,24 +49,5 @@ class GetJobAPI : FirebaseAPI() {
         }
     }
 
-    fun getChangeJob(taskId: String, callback: (List<Job>) -> Unit) {
-        val contentRef = firebaseReference
-            .child(Const.ContentsPATH)
-            .child(taskId)
-            .child(Const.JobPATH)
-
-        contentRef.addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    //未使用
-                }
-
-                override fun onDataChange(datasnapshot: DataSnapshot) {
-                    getJobItem(datasnapshot, callback)
-                    contentRef.removeEventListener(this)
-                }
-            }
-        )
-    }
 
 }

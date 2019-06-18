@@ -48,12 +48,23 @@ class TaskDetailAdapter(context: Context) : BaseAdapter() {
         return view
     }
 
-    fun addJob(job: Job) {
+    fun insertUpdateJob(job: Job) {
         //追加するジョブが無ければ新しく追加する
         if (mJobArrayList.filter { listItem -> listItem.jobId == job.jobId }.isEmpty()) {
             mJobArrayList.add(job)
             notifyDataSetChanged()
+            return
         }
+
+        //ジョブの更新
+        mJobArrayList.singleOrNull { targetJob ->
+            targetJob.jobId == job.jobId
+        }?.also { targetJob ->
+            mJobArrayList.remove(targetJob)
+            mJobArrayList.add(job)
+            notifyDataSetChanged()
+        }
+
     }
 
     fun setJobList(JobArrayList: List<Job>) {

@@ -28,10 +28,13 @@ class SyncJobAPI(taskId: String) : FirebaseAPI() {
         override fun onCancelled(p0: DatabaseError) {
         }
 
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+        override fun onChildMoved(datasnapshot: DataSnapshot, p1: String?) {
+
         }
 
         override fun onChildChanged(datasnapshot: DataSnapshot, p1: String?) {
+            val job = JobTranslater.dataSnapshotToJob(datasnapshot)
+            callback(job)
         }
 
         override fun onChildAdded(datasnapshot: DataSnapshot, p1: String?) {
@@ -40,6 +43,8 @@ class SyncJobAPI(taskId: String) : FirebaseAPI() {
         }
 
         override fun onChildRemoved(datasnapshot: DataSnapshot) {
+            val job = JobTranslater.dataSnapshotToJob(datasnapshot)
+            callback(job)
         }
 
     }
