@@ -46,6 +46,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        setTitle("ログイン画面")
+
         val isLogout = intent?.getBooleanExtra(KEY_LOGOUT, false) ?: false
         if (isLogout) {
             // だす

@@ -35,6 +35,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setTitle("管理画面")
         setupListView()
 
         //リストをタッチした処理
@@ -152,5 +153,10 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         gettaskAPI.getTask {
             mAdapter.setTaskList(it)
         }
+    }
+
+    override fun onBackPressed() {
+        // バックキーの無効化
+        moveTaskToBack (true)
     }
 }

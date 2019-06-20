@@ -15,7 +15,9 @@ import com.example.originactivity.R
 import com.example.originactivity.adapter.CustumSpinnerAdapter
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.SetJobAPI
+import com.example.originactivity.model.api.SpinnerAPI
 import com.example.originactivity.model.entity.Job
+import com.example.taskapp.UserNameAdapter
 import kotlinx.android.synthetic.main.activity_add_job.*
 import kotlinx.android.synthetic.main.activity_task_create.Buck_button
 import kotlinx.android.synthetic.main.activity_task_create.Decide_button
@@ -47,11 +49,13 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private var updateflag: Boolean = false
 
     private val jobAPI = SetJobAPI()
+    private val userAPI = SpinnerAPI()
 
-    private lateinit var mUserAdapter: CustumSpinnerAdapter
+    private lateinit var mUserAdapter: UserNameAdapter
     private var spinnerAdapter = CustumSpinnerAdapter()
     private var spinnerItems: MutableList<String> = mutableListOf()
     private var selectUserName: String = ""
+    private var selectId = 0
 
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TasklistAdapter
@@ -76,6 +80,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_job)
+        setTitle("作成画面")
 
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job?
@@ -90,7 +95,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
             date_button.text = sdf.format(longDate)
         }
 
-        //setSpinner()
+        setSpinner()
 
         //spinnerを操作した時
         spinner_userid.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -101,6 +106,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
             ) {
                 var spinnerParent = parent as Spinner
                 selectUserName = spinnerParent.selectedItem as String
+                selectId = id.toInt()
+
             }
 
             //　アイテムが選択されなかった
@@ -129,16 +136,6 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
                 registrationJob(v)
             }
         }
-    }
-
-    private fun setSpinner() {
-
-        // spinner に adapter をセット
-        spinner_userid.adapter = spinnerAdapter
-        spinnerAdapter.userList = spinnerItems
-
-        //spinnerにカテゴリーをセット
-        //val categoryRefineResults =
     }
 
     private fun registrationJob(v: View) {
@@ -178,4 +175,23 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun setSpinner() {
+
+        // spinner に adapter をセット
+        spinner_userid.adapter = spinnerAdapter
+        spinnerAdapter.userList = spinnerItems
+
+        userAPI.setSpinner(taskId){userList->
+            mUserAdapter.spinnerlist = userList
+
+            spinner_userid.adapter = mUserAdapter
+            mUserAdapter.notifyDataSetChanged()
+        }
+
+    }
+
+    override fun onBackPressed() {
+        // バックキーを押した際、タスク管理画面に移行
+        startActivity(TaskMainActivity.createIntent(this))
+    }
 }

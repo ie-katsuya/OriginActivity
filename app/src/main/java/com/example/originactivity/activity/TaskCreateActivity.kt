@@ -54,6 +54,7 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_create)
+        setTitle("作成画面")
 
         val calendar = Calendar.getInstance()
         mYear = calendar.get(Calendar.YEAR)
@@ -121,5 +122,10 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    override fun onBackPressed() {
+        // バックキーを押した際、タスク管理画面に移行
+        startActivity(TaskMainActivity.createIntent(this))
     }
 }

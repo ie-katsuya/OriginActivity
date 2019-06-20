@@ -33,6 +33,7 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pass_check)
+        setTitle("パスワードチェック")
 
         task = intent.getSerializableExtra(TaskDetailActivity.KEY_TASK) as Task
 
@@ -80,5 +81,10 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    override fun onBackPressed() {
+        // バックキーを押した際、タスク管理画面に移行
+        startActivity(TaskMainActivity.createIntent(this))
     }
 }

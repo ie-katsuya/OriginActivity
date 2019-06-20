@@ -8,12 +8,14 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.ListView
 import android.widget.TextView
+import com.example.originactivity.Const
 import com.example.originactivity.R
 import com.example.originactivity.adapter.TaskDetailAdapter
-import com.example.originactivity.model.api.GetJobAPI
 import com.example.originactivity.model.api.SyncJobAPI
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_task_detail.*
 
 class TaskDetailActivity : AppCompatActivity() {
@@ -33,13 +35,12 @@ class TaskDetailActivity : AppCompatActivity() {
     private lateinit var mListView: ListView
     private lateinit var mAdapter: TaskDetailAdapter
 
-    private val jobAPI = GetJobAPI()
-
     private val syncJobAPI by lazy { SyncJobAPI(task.taskId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
+        setTitle("詳細画面")
         task = intent.getSerializableExtra(KEY_TASK) as Task
 
         initView()
@@ -84,17 +85,12 @@ class TaskDetailActivity : AppCompatActivity() {
         goaltextview.text = task.goal
     }
 
-
     private fun setupListView() {
         // ListViewの準備
         mListView = this.findViewById(R.id.listView_detail)
         mAdapter = TaskDetailAdapter(this)
 
         mListView.adapter = mAdapter
-
-        mAdapter.setJobList(task.jobs)
-
-
     }
 
     // ListViewをタップしたときの処理
@@ -116,11 +112,11 @@ class TaskDetailActivity : AppCompatActivity() {
             // ダイアログを表示する
             val builder = AlertDialog.Builder(this@TaskDetailActivity)
 
-            builder.setTitle("完了")
-            builder.setMessage(job.title + "を完了しますか")
+            builder.setTitle("削除")
+            builder.setMessage(job.title + "を削除しますか")
 
             builder.setPositiveButton("OK") { _, _ ->
-                listView_detail.setBackgroundColor(Color.rgb(127, 127, 255))
+                deleteJob(mAdapter.getJob(position))
             }
 
             builder.setNegativeButton("CANCEL", null)
@@ -131,6 +127,17 @@ class TaskDetailActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    private fun deleteJob(job: Job) {
+        var deleteJobRef = FirebaseDatabase.getInstance().reference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+            .child(Const.JobPATH)
+            .child(job.jobId)
+
+        deleteJobRef.removeValue()
+        syncJobAPI.syncStart()
     }
 
     override fun onResume() {
@@ -145,4 +152,8 @@ class TaskDetailActivity : AppCompatActivity() {
         syncJobAPI.syncStop()
     }
 
+    override fun onBackPressed() {
+        // バックキーを押した際、タスク管理画面に移行
+        startActivity(TaskMainActivity.createIntent(this))
+    }
 }

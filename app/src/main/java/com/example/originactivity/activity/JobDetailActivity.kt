@@ -7,11 +7,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import com.example.originactivity.R
-import com.example.originactivity.adapter.TaskDetailAdapter
-import com.example.originactivity.model.api.GetJobAPI
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_job_detail.*
 import java.text.SimpleDateFormat
+import android.text.method.ScrollingMovementMethod
 
 class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
@@ -33,22 +32,32 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_detail)
+        setTitle("詳細画面")
 
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job
 
-        val titletextview: TextView = findViewById(R.id.job_textview)
-        titletextview.text = job?.title
+        updateContentLabel()
+        updateDateLabel()
 
+        edit_button.setOnClickListener(this)
+        back_button.setOnClickListener(this)
+    }
+
+    private fun updateContentLabel() {
+        val titleTextView = findViewById(R.id.job_textview) as TextView
+        titleTextView.movementMethod = ScrollingMovementMethod.getInstance()
+
+        titleTextView.text = job?.title
+    }
+
+    private fun updateDateLabel() {
         //日付のフォーマット設定
         val sdf = SimpleDateFormat("yyyy年 M月 d日")
         val date = job?.date
 
         val datetextview: TextView = findViewById(R.id.date_textview)
         datetextview.text = "完了予定日： " + sdf.format(date)
-
-        edit_button.setOnClickListener(this)
-        back_button.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -64,4 +73,8 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onBackPressed() {
+        // バックキーを押した際、タスク管理画面に移行
+        startActivity(TaskMainActivity.createIntent(this))
+    }
 }
