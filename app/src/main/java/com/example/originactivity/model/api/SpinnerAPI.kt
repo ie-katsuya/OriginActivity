@@ -23,14 +23,14 @@ class SpinnerAPI : FirebaseAPI() {
                 }
 
                 override fun onDataChange(datasnapshot: DataSnapshot) {
-                    getSpinner(datasnapshot, callback)
+                    getSpinner(taskId, datasnapshot, callback)
                     userRef.removeEventListener(this)
                 }
             }
         )
     }
 
-    private fun getSpinner(datasnapshot: DataSnapshot, callback: (MutableList<User>) -> Unit) {
+    private fun getSpinner(taskId: String, datasnapshot: DataSnapshot, callback: (MutableList<User>) -> Unit) {
         //関与しているタスクをリストに表示
         val userIdList = mutableListOf<String>()
         datasnapshot.children.forEach { item ->
@@ -42,11 +42,12 @@ class SpinnerAPI : FirebaseAPI() {
         var currentCount = 0L
         val userList = mutableListOf<User>()
 
-        userIdList.forEach { taskId ->
+        userIdList.forEach { userId ->
             val taskDetabaseReference = firebaseReference
                 .child(Const.ContentsPATH)
                 .child(taskId)
                 .child(Const.UsersPATH)
+                .child(userId)
             taskDetabaseReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     //未使用

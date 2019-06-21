@@ -10,6 +10,7 @@ import com.example.originactivity.R
 import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.GetTaskAPI
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_task_search.*
 
 class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
@@ -26,12 +27,12 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
     private val gettaskAPI = GetTaskAPI()
 
     // ログイン済みのユーザーを取得する
-    protected val user = FirebaseAuth.getInstance().currentUser
+    protected val user: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_search)
-        setTitle("検索画面")
+        setTitle("タスク検索画面")
 
         setupListView()
 
@@ -63,7 +64,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
     private fun listTouch() {
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
-           val sameUserflag = mAdapter.userFilter(user!!.uid, position)
+           val sameUserflag = mAdapter.userFilter(user.uid, position)
 
             if (sameUserflag) {
                 //Favoriteに登録していたら、詳細画面へ

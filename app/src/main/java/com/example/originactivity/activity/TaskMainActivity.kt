@@ -35,7 +35,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setTitle("管理画面")
+        setTitle("タスク管理画面")
         setupListView()
 
         //リストをタッチした処理
@@ -123,15 +123,11 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     //後ほどAPI化
     private fun deleteTask(task: Task) {
         // ログイン済みのユーザーを取得する
-        val user = FirebaseAuth.getInstance().currentUser
-
-        var deleteRef = FirebaseDatabase.getInstance().reference
-            .child(Const.ContentsPATH)
-            .child(task.taskId)
+        val user = FirebaseAuth.getInstance().currentUser ?: return
 
         var deleteFavoriteRef = FirebaseDatabase.getInstance().reference
             .child(Const.Favorite)
-            .child(user!!.uid)
+            .child(user.uid)
             .child(task.taskId)
 
         var deleteUsersRef = FirebaseDatabase.getInstance().reference
@@ -139,7 +135,6 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
             .child(task.taskId)
             .child(Const.UsersPATH)
 
-        deleteRef.removeValue()
         deleteFavoriteRef.removeValue()
         deleteUsersRef.removeValue()
 

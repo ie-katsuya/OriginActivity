@@ -1,5 +1,6 @@
 package com.example.originactivity.model.api
 
+import android.util.Log
 import com.example.originactivity.Const
 import com.example.originactivity.model.entity.Job
 import com.example.originactivity.model.entity.Task
@@ -53,8 +54,11 @@ class GetTaskAPI : FirebaseAPI() {
                 override fun onDataChange(data: DataSnapshot) {
                     taskDetabaseReference.removeEventListener(this)
                     currentCount++
-                    val allTask = data.toTask()
-                    taskList.add(allTask)
+                    data.toTask()?.also {task->
+                        taskList.add(task)
+                    } ?: run {
+                        Log.w("GetTaskAPI", "変換に失敗しました！: taskId = $taskId")
+                    }
                     if (currentCount >= totalCount) {
                         callback(taskList)
                     }
@@ -82,8 +86,8 @@ class GetTaskAPI : FirebaseAPI() {
         )
     }
 
-    private fun DataSnapshot.toTask(): Task {
-        val map = this.value as Map<String, Any>
+    private fun DataSnapshot.toTask(): Task? {
+        val map = this.value as? Map<String, Any> ?: return null
         val title = map.get("title") as? String ?: ""
         val pass = map.get("pass") as? String ?: ""
         val goal = map.get("goal") as? String ?: ""
@@ -96,8 +100,9 @@ class GetTaskAPI : FirebaseAPI() {
             val value = it.value as? HashMap<String, Any> ?: return@forEach
             val jobTitle = value["title"] as? String ?: ""
             val jobDate = value["date"] as? Long ?: 0L
+            val jobUserName = value["userName"] as? String ?: ""
             val jobId = it.key ?: ""
-            jobs.add(Job(jobTitle, jobDate, jobId))
+            jobs.add(Job(jobTitle, jobDate, jobId, jobUserName))
         }
 
         val inputUsers = map.get("users") as? HashMap<String, String>

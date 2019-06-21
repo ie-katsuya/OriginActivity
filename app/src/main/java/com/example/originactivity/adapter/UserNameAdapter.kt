@@ -26,7 +26,7 @@ class UserNameAdapter(context: Context): BaseAdapter()  {
     }
 
     override fun getItemId(position: Int): Long {
-        return spinnerlist[position].userId.toLong()
+        return position.toLong()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

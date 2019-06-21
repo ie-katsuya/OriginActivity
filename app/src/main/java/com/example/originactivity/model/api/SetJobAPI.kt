@@ -6,7 +6,7 @@ import java.util.*
 
 class SetJobAPI : FirebaseAPI() {
 
-    fun setJob(taskId: String, title: String, date: Long, callback: (Boolean) -> Unit) {
+    fun setJob(taskId: String, title: String, date: Long, selectName: String, callback: (Boolean) -> Unit) {
 
         val jobRef = firebaseReference
             .child(Const.ContentsPATH)
@@ -17,6 +17,7 @@ class SetJobAPI : FirebaseAPI() {
 
         jobData["title"] = title
         jobData["date"] = date
+        jobData["userName"] = selectName
 
         jobRef.push().setValue(jobData) { error, detabaseReference ->
             if (error != null) {
@@ -26,7 +27,7 @@ class SetJobAPI : FirebaseAPI() {
         }
     }
 
-    fun updateJob(taskId: String, title: String, date: Long, jobId: String,callback: (Boolean) -> Unit) {
+    fun updateJob(taskId: String, title: String, date: Long, selectName: String, jobId: String,callback: (Boolean) -> Unit) {
 
         val jobRef = firebaseReference
             .child(Const.ContentsPATH)
@@ -38,6 +39,7 @@ class SetJobAPI : FirebaseAPI() {
 
         jobData["title"] = title
         jobData["date"] = date
+        jobData["userName"] = selectName
 
         jobRef.updateChildren(jobData) { error, detabaseReference ->
             if (error != null) {

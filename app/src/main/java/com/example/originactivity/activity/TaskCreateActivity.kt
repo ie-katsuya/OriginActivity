@@ -54,7 +54,7 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_create)
-        setTitle("作成画面")
+        setTitle("タスク作成画面")
 
         val calendar = Calendar.getInstance()
         mYear = calendar.get(Calendar.YEAR)
@@ -66,10 +66,10 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
         date_button.setOnClickListener(mOnDateClickListener)
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View) {
         // キーボードが出てたら閉じる
         val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        im.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        im.hideSoftInputFromWindow(v.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
         val dataBaseReference = FirebaseDatabase.getInstance().reference
 
@@ -85,25 +85,25 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
 
             if (title.isEmpty() == true) {
                 // タイトルが入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
                 return
             }
 
             if (goal.isEmpty() == true) {
                 // 質問が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "目標を入力して下さい", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "目標を入力して下さい", Snackbar.LENGTH_LONG).show()
                 return
             }
 
             if (pass.isEmpty() == true) {
                 // 質問が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
                 return
             }
 
             if (date.isEmpty() == true) {
                 // 質問が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v!!, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(v, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
                 return
             }
 

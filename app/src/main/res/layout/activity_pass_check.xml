@@ -14,7 +14,7 @@
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword|number"
+            android:inputType="textPassword|number|text"
             android:layout_centerInParent="true"
             android:id="@+id/pass_pass"
             android:layout_above="@+id/Decide_button"/>

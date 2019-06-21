@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.TextView
 import com.example.originactivity.R
 import com.example.originactivity.model.entity.Job
 import kotlinx.android.synthetic.main.activity_job_detail.*
 import java.text.SimpleDateFormat
-import android.text.method.ScrollingMovementMethod
 
 class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
@@ -32,13 +32,14 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_detail)
-        setTitle("詳細画面")
+        setTitle("ジョブ詳細画面")
 
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job
 
         updateContentLabel()
         updateDateLabel()
+        updateUserNameLabel()
 
         edit_button.setOnClickListener(this)
         back_button.setOnClickListener(this)
@@ -58,6 +59,12 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         val datetextview: TextView = findViewById(R.id.date_textview)
         datetextview.text = "完了予定日： " + sdf.format(date)
+    }
+
+    private fun updateUserNameLabel() {
+        val userNameTextView = findViewById(R.id.user_name) as TextView
+
+        userNameTextView.text = job?.userName
     }
 
     override fun onClick(v: View) {

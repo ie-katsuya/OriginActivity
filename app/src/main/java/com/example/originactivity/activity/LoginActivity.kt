@@ -83,44 +83,10 @@ class LoginActivity : AppCompatActivity() {
         mLoginListener = OnCompleteListener { task ->
             if (task.isSuccessful) {
                 // 成功した場合
-                val user = mAuth.currentUser
-                val userRef = mDataBaseReference.child(Const.UsersPATH).child(user!!.uid)
-
-                if (mIsCreateAccount) {
-                    // アカウント作成の時は表示名をFirebaseに保存する
-                    val name = nameText.text.toString()
-
-                    val data = HashMap<String, String>()
-                    data["name"] = name
-                    userRef.setValue(data)
-
-                    // 表示名をPrefarenceに保存する
-                    saveName(name)
-                } else {
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val data = snapshot.value as Map<*, *>?
-                            saveName(data!!["name"] as String)
-                        }
-
-                        override fun onCancelled(firebaseError: DatabaseError) {}
-                    })
-                }
-
-                // プログレスバーを非表示にする
-                progressBar.visibility = View.GONE
-
-                // Activityを閉じる
-                navigateToTaskMain()
-
+                succesLogin()
             } else {
                 // 失敗した場合
-                // エラーを表示する
-                val view = findViewById<View>(android.R.id.content)
-                Snackbar.make(view, "ログインに失敗しました", Snackbar.LENGTH_LONG).show()
-
-                // プログレスバーを非表示にする
-                progressBar.visibility = View.GONE
+                failureLogin()
             }
         }
 
@@ -165,6 +131,47 @@ class LoginActivity : AppCompatActivity() {
                 Snackbar.make(v, "正しく入力してください", Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun succesLogin(){
+        val user = mAuth.currentUser
+        val userRef = mDataBaseReference.child(Const.UsersPATH).child(user!!.uid)
+
+        if (mIsCreateAccount) {
+            // アカウント作成の時は表示名をFirebaseに保存する
+            val name = nameText.text.toString()
+
+            val data = HashMap<String, String>()
+            data["name"] = name
+            userRef.setValue(data)
+
+            // 表示名をPrefarenceに保存する
+            saveName(name)
+        } else {
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val data = snapshot.value as? Map<*, *>
+                    saveName(data!!["name"] as String)
+                }
+
+                override fun onCancelled(firebaseError: DatabaseError) {}
+            })
+        }
+
+        // プログレスバーを非表示にする
+        progressBar.visibility = View.GONE
+
+        // Activityを閉じる
+        navigateToTaskMain()
+    }
+
+    private fun failureLogin(){
+        // エラーを表示する
+        val view = findViewById<View>(android.R.id.content)
+        Snackbar.make(view, "ログインに失敗しました", Snackbar.LENGTH_LONG).show()
+
+        // プログレスバーを非表示にする
+        progressBar.visibility = View.GONE
     }
 
     private fun createAccount(email: String, password: String) {

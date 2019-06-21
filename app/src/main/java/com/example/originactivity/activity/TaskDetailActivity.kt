@@ -40,7 +40,7 @@ class TaskDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
-        setTitle("詳細画面")
+        setTitle("タスク詳細画面")
         task = intent.getSerializableExtra(KEY_TASK) as Task
 
         initView()

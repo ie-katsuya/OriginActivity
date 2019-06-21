@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:id="@+id/job_Edit"
+            android:inputType="text"
             android:layout_above="@+id/date_button"/>
 
     <Button

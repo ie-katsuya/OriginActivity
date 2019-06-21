@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailText"
+                android:inputType="text"
                 android:hint="メールアドレス" />
 
         <EditText
@@ -33,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="表示名"
+                android:inputType="text"
                 android:id="@+id/nameText" />
 
         <Button

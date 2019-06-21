@@ -9,14 +9,13 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.Spinner
 import com.example.originactivity.R
 import com.example.originactivity.adapter.CustumSpinnerAdapter
-import com.example.originactivity.adapter.TasklistAdapter
 import com.example.originactivity.model.api.SetJobAPI
 import com.example.originactivity.model.api.SpinnerAPI
 import com.example.originactivity.model.entity.Job
+import com.example.originactivity.model.entity.User
 import com.example.taskapp.UserNameAdapter
 import kotlinx.android.synthetic.main.activity_add_job.*
 import kotlinx.android.synthetic.main.activity_task_create.Buck_button
@@ -43,7 +42,7 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private var mDay = 0
     private var stringDate: String = ""
     private var longDate = 0L
-    private lateinit var taskId: String
+    private var taskId: String = ""
     private var job: Job? = null
     private var title: String = ""
     private var updateflag: Boolean = false
@@ -51,14 +50,10 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     private val jobAPI = SetJobAPI()
     private val userAPI = SpinnerAPI()
 
-    private lateinit var mUserAdapter: UserNameAdapter
+    private val mUserAdapter by lazy { UserNameAdapter(this) }
     private var spinnerAdapter = CustumSpinnerAdapter()
     private var spinnerItems: MutableList<String> = mutableListOf()
     private var selectUserName: String = ""
-    private var selectId = 0
-
-    private lateinit var mListView: ListView
-    private lateinit var mAdapter: TasklistAdapter
 
     //時間設定
     private val mOnDateClickListener = View.OnClickListener {
@@ -80,41 +75,26 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_job)
-        setTitle("作成画面")
+        setTitle("ジョブ作成画面")
 
         taskId = intent.getStringExtra(KEY_TASK_ID)
-        job = intent.getSerializableExtra(KEY_JOB) as Job?
+        job = intent.getSerializableExtra(KEY_JOB) as? Job
 
-        if (job != null) {
+        job?.also { job ->
             updateflag = true
-            job_Edit.setText(job!!.title)
-            title = job!!.title
+            job_Edit.setText(job.title)
+            title = job.title
 
             val sdf = SimpleDateFormat("yyyy年 M月 d日")
-            longDate = job!!.date
+            longDate = job.date
             date_button.text = sdf.format(longDate)
+
+            selectUserName = job.userName
         }
 
         setSpinner()
 
-        //spinnerを操作した時
-        spinner_userid.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            //　アイテムが選択された時
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?, position: Int, id: Long
-            ) {
-                var spinnerParent = parent as Spinner
-                selectUserName = spinnerParent.selectedItem as String
-                selectId = id.toInt()
-
-            }
-
-            //　アイテムが選択されなかった
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
+        touchSpinnerButton()
 
         //カレンダーの初期設定を現在の日付に
         val calendar = Calendar.getInstance()
@@ -157,17 +137,23 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
+        if (selectUserName.isEmpty()) {
+            // パスワードが入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "担当者を入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
         val calendar = GregorianCalendar(mYear, mMonth, mDay)
         var date = calendar.time
 
         if (updateflag == true) {
-            jobAPI.updateJob(taskId, title, date.time, job!!.jobId) { isupdateResult ->
+            jobAPI.updateJob(taskId, title, date.time, job!!.jobId, selectUserName) { isupdateResult ->
                 if (isupdateResult) {
                     finish()
                 }
             }
         } else {
-            jobAPI.setJob(taskId, title, date.time) { issetValueResult ->
+            jobAPI.setJob(taskId, title, date.time, selectUserName) { issetValueResult ->
                 if (issetValueResult) {
                     finish()
                 }
@@ -176,18 +162,37 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setSpinner() {
-
         // spinner に adapter をセット
         spinner_userid.adapter = spinnerAdapter
         spinnerAdapter.userList = spinnerItems
 
-        userAPI.setSpinner(taskId){userList->
+        userAPI.setSpinner(taskId) { userList ->
             mUserAdapter.spinnerlist = userList
 
             spinner_userid.adapter = mUserAdapter
             mUserAdapter.notifyDataSetChanged()
         }
+    }
 
+    private fun touchSpinnerButton() {
+
+        //spinnerを操作した時
+        spinner_userid.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            //　アイテムが選択された時
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?, position: Int, id: Long
+            ) {
+                var spinnerParent = parent as Spinner
+                val user = spinnerParent.selectedItem as User
+                selectUserName = user.userName
+            }
+
+            //　アイテムが選択されなかった
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
     }
 
     override fun onBackPressed() {
