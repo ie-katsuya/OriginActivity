@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.originactivity">
+          package="com.example.TaskManagement">
 
     <application
             android:allowBackup="true"
@@ -10,33 +10,33 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.JobDetailActivity">
+        <activity android:name="com.example.TaskManagement.activity.JobDetailActivity">
         </activity>
-        <activity android:name=".activity.StartActivity">
+        <activity android:name="com.example.TaskManagement.activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PassCheckActivity">
+        <activity android:name="com.example.TaskManagement.activity.PassCheckActivity">
         </activity>
-        <activity android:name=".activity.TaskSearchActivity">
+        <activity android:name="com.example.TaskManagement.activity.TaskSearchActivity">
         </activity>
-        <activity android:name=".activity.JobCreateActivity">
+        <activity android:name="com.example.TaskManagement.activity.JobCreateActivity">
         </activity>
-        <activity android:name=".activity.TaskDetailActivity">
+        <activity android:name="com.example.TaskManagement.activity.TaskDetailActivity">
         </activity>
-        <activity android:name=".activity.TaskCreateActivity">
+        <activity android:name="com.example.TaskManagement.activity.TaskCreateActivity">
         </activity>
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name="com.example.TaskManagement.activity.LoginActivity">
         </activity>
-        <activity android:name=".activity.SettingActivity">
+        <activity android:name="com.example.TaskManagement.activity.SettingActivity">
         </activity>
-        <activity android:name=".activity.TaskMainActivity">
+        <activity android:name="com.example.TaskManagement.activity.TaskMainActivity">
         </activity>
         <activity
-                android:name=".activity.LoginActivity"
+                android:name="com.example.TaskManagement.activity.LoginActivity"
                 tools:ignore="DuplicateActivity"/>
     </application>
 

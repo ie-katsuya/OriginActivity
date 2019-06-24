@@ -11,39 +11,49 @@
         android:paddingTop="16dp"
         tools:context=".activity.JobCreateActivity">
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="仕事内容"
-            android:id="@+id/job_Text"
-            android:layout_above="@+id/job_Edit"
-            android:layout_centerInParent="true"/>
 
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="30dp"
             android:id="@+id/job_Edit"
+            android:hint="仕事内容"
             android:inputType="text"
-            android:layout_above="@+id/date_button"/>
+            android:layout_above="@+id/date_Text"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="完了予定日"
+            android:id="@+id/date_Text"
+            android:layout_above="@+id/date_button"
+            android:layout_centerInParent="true"/>
 
     <Button
             android:id="@+id/date_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_above="@+id/spinner_userid"
+            android:layout_marginBottom="30dp"
+            android:layout_above="@+id/user_Text"
             android:text="----/--/--"
+            android:textSize="25sp"
             style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="担当者"
+            android:id="@+id/user_Text"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"/>
 
     <Spinner
             android:id="@+id/spinner_userid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="20dp"
-            android:layout_centerInParent="true"
-            android:hint="カテゴリー" />
+            android:layout_below="@+id/user_Text"
+            android:textSize="25sp"/>
 
     <Button
             android:layout_width="match_parent"

@@ -8,6 +8,7 @@
             android:layout_height="wrap_content"
             android:text="tilte"
             android:id="@+id/bodyTextView"
+            android:textSize="50dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" android:layout_alignParentLeft="true"/>
 
@@ -15,7 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="date"
-            android:id="@+id/nameTextView"
+            android:id="@+id/dateTextView"
             android:layout_below="@+id/bodyTextView"
+            android:layout_alignParentEnd="true" android:layout_alignParentRight="true"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:id="@+id/userName"
+            android:layout_below="@+id/dateTextView"
             android:layout_alignParentEnd="true" android:layout_alignParentRight="true"/>
 </RelativeLayout>

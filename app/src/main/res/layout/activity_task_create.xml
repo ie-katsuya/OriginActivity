@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="16dp"
@@ -32,7 +31,7 @@
             android:text="パスワード"
             android:id="@+id/pass_Text"
             android:layout_above="@+id/pass_Edit"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:layout_centerInParent="true"/>
 
     <EditText
@@ -40,41 +39,27 @@
             android:layout_height="wrap_content"
             android:id="@+id/pass_Edit"
             android:gravity="top"
-            android:layout_above="@+id/goal_Text"
-            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"
+            android:layout_above="@+id/date_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:inputType="number|textPassword|text"/>
-
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ゴール"
-            android:id="@+id/goal_Text"
-            android:layout_marginTop="30dp"
-            android:layout_above="@+id/goal_Edit"/>
-
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/goal_Edit"
-            android:gravity="top"
-            android:inputType="text"
-            android:layout_centerInParent="true"
-            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"/>
 
     <Button
             android:id="@+id/date_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/goal_Edit"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:text="----/--/--"
+            android:textSize="25sp"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:text="作成"
             android:id="@+id/Decide_button"
             android:layout_below="@+id/date_button"/>
@@ -82,7 +67,7 @@
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:text="戻る"
             android:id="@+id/Buck_button"
             android:layout_below="@+id/Decide_button"/>
