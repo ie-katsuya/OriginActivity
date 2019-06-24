@@ -145,4 +145,7 @@ class TaskDetailActivity : AppCompatActivity() {
         syncJobAPI.syncStop()
     }
 
+    override fun onBackPressed() {
+        startActivity(TaskMainActivity.createIntent(this))
+    }
 }

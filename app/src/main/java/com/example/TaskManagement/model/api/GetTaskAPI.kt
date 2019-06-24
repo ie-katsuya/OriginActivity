@@ -42,6 +42,11 @@ class GetTaskAPI : FirebaseAPI() {
         var currentCount = 0L
         val taskList = mutableListOf<Task>()
 
+        if(taskIdList.isEmpty()){
+            callback(taskList)
+            return
+        }
+
         taskIdList.forEach { taskId ->
             val taskDetabaseReference = firebaseReference
                 .child(Const.ContentsPATH)

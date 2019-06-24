@@ -9,14 +9,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ListView
-import com.example.TaskManagement.Const
 import com.example.TaskManagement.R
 import com.example.TaskManagement.adapter.TasklistAdapter
 import com.example.TaskManagement.model.api.DeleteAPI
 import com.example.TaskManagement.model.api.GetTaskAPI
 import com.example.TaskManagement.model.entity.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
@@ -88,6 +85,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun ListTouch() {
+
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener { parent, view, position, id ->
             // Taskのインスタンスを渡して質問詳細画面を起動する
@@ -112,7 +110,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
                 deleteAllTask(mAdapter.getTask(position))
             }
 
-            builder.setNegativeButton("タスクから退出する"){_, _ ->
+            builder.setNegativeButton("タスクから退出する") { _, _ ->
                 deleteTask(mAdapter.getTask(position))
             }
 
@@ -126,29 +124,31 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun deleteTask(task: Task) {
-        deleteAPI.deleteUser(task)
+        deleteAPI.deleteUser(task) {
+            updateTaskList()
+        }
 
     }
 
     private fun deleteAllTask(task: Task) {
-        deleteAPI.deleteTask(task)
-
-        deleteAPI.deleteUser(task)
-
-        deleteAPI.deleteFavoriteTask(task)
-
-
+        deleteAPI.deleteAllTask(task) {
+            updateTaskList()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        gettaskAPI.getTask {
-            mAdapter.setTaskList(it)
-        }
+        updateTaskList()
     }
 
     override fun onBackPressed() {
         // バックキーの無効化
         moveTaskToBack(true)
+    }
+
+    private fun updateTaskList() {
+        gettaskAPI.getTask {
+            mAdapter.setTaskList(it)
+        }
     }
 }
