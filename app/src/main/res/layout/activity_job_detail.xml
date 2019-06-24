@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/back_button"
-            android:text="ホームへ戻る"
+            android:text="戻る"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/edit_button"/>
 

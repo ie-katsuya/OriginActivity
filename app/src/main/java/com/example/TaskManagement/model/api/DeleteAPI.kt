@@ -1,6 +1,7 @@
 package com.example.TaskManagement.model.api
 
 import com.example.TaskManagement.Const
+import com.example.TaskManagement.model.entity.Job
 import com.example.TaskManagement.model.entity.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,6 +28,21 @@ class DeleteAPI : FirebaseAPI() {
             }
         }
 
+    }
+
+    fun deleteJob(task: Task, job: Job, callback: () -> Unit){
+        var deleteJobRef = FirebaseDatabase.getInstance().reference
+            .child(Const.ContentsPATH)
+            .child(task.taskId)
+            .child(Const.JobPATH)
+            .child(job.jobId)
+
+        deleteJobRef.removeValue { databaseError, databaseReference ->
+            if (databaseError != null) {
+                return@removeValue
+            }
+            callback()
+        }
     }
 
     private fun deleteFavoriteTask(task: Task, callback: () -> Unit) {

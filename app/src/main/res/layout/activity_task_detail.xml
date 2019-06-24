@@ -26,6 +26,14 @@
             android:textSize="20sp"
             android:id="@+id/date_Text"/>
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ジョブが追加されていません"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:id="@+id/empty_message"/>
+
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

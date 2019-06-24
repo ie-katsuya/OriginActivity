@@ -5,16 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.ListView
 import android.widget.TextView
 import com.example.TaskManagement.Const
 import com.example.TaskManagement.R
 import com.example.TaskManagement.adapter.TaskDetailAdapter
+import com.example.TaskManagement.model.api.DeleteAPI
 import com.example.TaskManagement.model.api.SyncJobAPI
 import com.example.TaskManagement.model.entity.Job
 import com.example.TaskManagement.model.entity.Task
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_task_detail.*
+import java.text.SimpleDateFormat
 
 class TaskDetailActivity : AppCompatActivity() {
 
@@ -34,6 +37,7 @@ class TaskDetailActivity : AppCompatActivity() {
     private lateinit var mAdapter: TaskDetailAdapter
 
     private val syncJobAPI by lazy { SyncJobAPI(task.taskId) }
+    private val deleteAPI = DeleteAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +57,11 @@ class TaskDetailActivity : AppCompatActivity() {
     private fun initView() {
         syncJobAPI.callback = { job ->
             mAdapter.insertUpdateJob(job)
+            listEmpty()
         }
 
         updateTitleLabel()
+        updateDateLabel()
 
         setupListView()
 
@@ -78,12 +84,23 @@ class TaskDetailActivity : AppCompatActivity() {
         titletextview.text = task.title
     }
 
+    private fun updateDateLabel() {
+        //日付のフォーマット設定
+        val sdf = SimpleDateFormat("yyyy年 M月 d日")
+        val date = task.date
+
+        val datetextview: TextView = findViewById(R.id.date_Text)
+        datetextview.text = "完了予定日： " + sdf.format(date)
+    }
+
     private fun setupListView() {
         // ListViewの準備
         mListView = this.findViewById(R.id.listView_detail)
         mAdapter = TaskDetailAdapter(this)
 
         mListView.adapter = mAdapter
+
+        listEmpty()
     }
 
     // ListViewをタップしたときの処理
@@ -123,29 +140,35 @@ class TaskDetailActivity : AppCompatActivity() {
     }
 
     private fun deleteJob(job: Job) {
-        var deleteJobRef = FirebaseDatabase.getInstance().reference
-            .child(Const.ContentsPATH)
-            .child(task.taskId)
-            .child(Const.JobPATH)
-            .child(job.jobId)
-
-        deleteJobRef.removeValue()
-        syncJobAPI.syncStart()
+        deleteAPI.deleteJob(task, job){
+            syncJobAPI.syncStart()
+            listEmpty()
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
         syncJobAPI.syncStart()
+        listEmpty()
     }
 
     override fun onPause() {
         super.onPause()
 
         syncJobAPI.syncStop()
+
     }
 
     override fun onBackPressed() {
         startActivity(TaskMainActivity.createIntent(this))
+    }
+
+    fun listEmpty() {
+        if (mAdapter.isEmpty) {
+            empty_message.setVisibility(View.VISIBLE)
+        } else {
+            empty_message.setVisibility(View.INVISIBLE)
+        }
     }
 }

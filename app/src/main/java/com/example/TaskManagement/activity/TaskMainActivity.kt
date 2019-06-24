@@ -1,5 +1,6 @@
 package com.example.TaskManagement.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -31,6 +32,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     private var isChildEventEnabled = false
     private val deleteAPI = DeleteAPI()
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -42,7 +44,16 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
         fab.setOnClickListener { view ->
             //タスク作成画面に遷移
-            startActivity(TaskCreateActivity.createIntent(this))
+            //startActivity(TaskCreateActivity.createIntent(this))
+            if(menu_view.visibility != View.VISIBLE) {
+                menu_view.setVisibility(View.VISIBLE)
+                add_fab.setVisibility(View.VISIBLE)
+                search_fab.setVisibility(View.VISIBLE)
+            }else{
+                menu_view.setVisibility(View.GONE)
+                add_fab.setVisibility(View.GONE)
+                search_fab.setVisibility(View.GONE)
+            }
         }
 
         search_button.setOnClickListener(this)
@@ -102,20 +113,23 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
 
             // ダイアログを表示する
             val builder = AlertDialog.Builder(this@TaskMainActivity)
-
-            builder.setTitle("削除")
-            builder.setMessage(task.title + "を削除しますか")
-
-            builder.setPositiveButton("タスクを削除") { _, _ ->
-                deleteAllTask(mAdapter.getTask(position))
-            }
-
-            builder.setNegativeButton("タスクから退出する") { _, _ ->
-                deleteTask(mAdapter.getTask(position))
-            }
-
+            val view = View.inflate(this, R.layout.list_task_menu, null)
+            builder.setView(view)
             val dialog = builder.create()
             dialog.show()
+            view.findViewById<View>(R.id.cancel).setOnClickListener {
+                dialog.dismiss()
+            }
+
+            view.findViewById<View>(R.id.remove_task).setOnClickListener {
+                deleteAllTask(mAdapter.getTask(position))
+                dialog.dismiss()
+            }
+
+            view.findViewById<View>(R.id.remove_favorite).setOnClickListener {
+                deleteTask(mAdapter.getTask(position))
+                dialog.dismiss()
+            }
 
             true
         }
