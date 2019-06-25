@@ -28,14 +28,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="変更"/>
+                android:text="変更"
+                android:textSize="25dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_custom"/>
 
         <Button
                 android:id="@+id/logoutButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="ログアウト"/>
+                android:text="ログアウト"
+                android:textSize="25dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_custom"/>
     </LinearLayout>
 
 </RelativeLayout>

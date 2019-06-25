@@ -44,14 +44,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="ログイン"
-                android:id="@+id/loginButton"/>
+                android:textSize="25dp"
+                android:textColor="#FFFFFF"
+                android:id="@+id/loginButton"
+                android:background="@drawable/button_custom"/>
 
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="アカウント作成"
-                android:id="@+id/createButton"/>
+                android:textSize="25dp"
+                android:textColor="#FFFFFF"
+                android:id="@+id/createButton"
+                android:background="@drawable/button_custom"/>
     </LinearLayout>
 
     <ProgressBar

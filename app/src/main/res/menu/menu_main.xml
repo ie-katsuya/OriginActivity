@@ -7,6 +7,6 @@
             android:id="@+id/action_settings"
             android:orderInCategory="100"
             app:showAsAction="ifRoom"
-            android:icon="@drawable/setting_white"
+            android:icon="@drawable/ic_person_36"
             android:title="setting"/>
 </menu>

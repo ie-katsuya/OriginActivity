@@ -5,6 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.JobDetailActivity"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
         android:background="#FFFFFF">
 
     <TextView
@@ -43,7 +47,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/edit_button"
             android:text="編集"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
             android:layout_marginTop="30dp"
-            android:layout_below="@+id/user_name"/>
+            android:layout_below="@+id/user_name"
+            android:background="@drawable/button_custom"/>
 
 </RelativeLayout>

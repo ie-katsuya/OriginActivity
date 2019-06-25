@@ -47,7 +47,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_button"
             android:layout_alignParentBottom="true"
-            android:text="ジョブ追加"/>
+            android:text="ジョブ追加"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_custom"/>
 
 
 </RelativeLayout>

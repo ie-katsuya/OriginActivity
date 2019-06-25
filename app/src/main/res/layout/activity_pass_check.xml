@@ -24,21 +24,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="決定"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
             android:id="@+id/Decide_button"
             android:layout_marginTop="50dp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:background="@drawable/button_custom"/>
 
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="戻る"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
             android:id="@+id/Buck_button"
             android:layout_below="@+id/Decide_button"
             android:layout_marginTop="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" tools:ignore="UnknownId"/>
+            app:layout_constraintTop_toTopOf="parent" tools:ignore="UnknownId"
+            android:background="@drawable/button_custom"/>
 
 
 </RelativeLayout>
