@@ -43,13 +43,10 @@
             android:layout_below="@+id/date_textview"/>
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/edit_button"
             android:text="編集"
-            android:textSize="25dp"
-            android:textColor="#FFFFFF"
             android:layout_marginTop="30dp"
+            style="@style/ButtonText"
             android:layout_below="@+id/user_name"
             android:background="@drawable/button_custom"/>
 

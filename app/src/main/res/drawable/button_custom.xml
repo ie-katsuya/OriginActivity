@@ -12,6 +12,12 @@
             <solid
                     android:color="#778899"/>
             <corners android:radius="10dp"/>
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp" />
         </shape>
     </item>
 
@@ -24,9 +30,13 @@
                     android:color="#6495ED"/>
 
             <corners android:radius="10dp"/>
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp" />
         </shape>
     </item>
-
-
 
 </selector>

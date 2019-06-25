@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/searchButton"
             android:layout_marginTop="10dp"
-            android:background="@drawable/searchicon"
+            android:background="@drawable/ic_search_blue"
             android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

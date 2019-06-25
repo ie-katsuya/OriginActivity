@@ -40,23 +40,17 @@
                 android:id="@+id/nameText" />
 
         <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="ログイン"
-                android:textSize="25dp"
-                android:textColor="#FFFFFF"
                 android:id="@+id/loginButton"
+                style="@style/ButtonText"
                 android:background="@drawable/button_custom"/>
 
         <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="アカウント作成"
-                android:textSize="25dp"
-                android:textColor="#FFFFFF"
                 android:id="@+id/createButton"
+                style="@style/ButtonText"
                 android:background="@drawable/button_custom"/>
     </LinearLayout>
 

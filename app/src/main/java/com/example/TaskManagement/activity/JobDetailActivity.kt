@@ -31,10 +31,11 @@ class JobDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_detail)
-        setTitle("ジョブ詳細")
 
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job
+
+        setTitle(job!!.title)
 
         updateContentLabel()
         updateDateLabel()

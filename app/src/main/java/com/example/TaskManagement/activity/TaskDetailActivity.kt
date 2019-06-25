@@ -42,8 +42,8 @@ class TaskDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
-        setTitle("タスク詳細")
         task = intent.getSerializableExtra(KEY_TASK) as Task
+        setTitle(task.title)
 
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)

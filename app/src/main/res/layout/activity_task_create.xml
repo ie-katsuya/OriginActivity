@@ -59,13 +59,10 @@
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="作成"
-            android:textSize="25dp"
-            android:textColor="#FFFFFF"
             android:id="@+id/Decide_button"
+            style="@style/ButtonText"
             android:layout_below="@+id/date_button"
             android:background="@drawable/button_custom"/>
 
