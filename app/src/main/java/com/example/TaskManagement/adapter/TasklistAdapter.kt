@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.TaskManagement.R
 import com.example.TaskManagement.model.entity.Task
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,21 +36,21 @@ class TasklistAdapter(context: Context) : BaseAdapter() {
 
     @SuppressLint("SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        val view: View = convertView ?: mLayoutInflater.inflate(android.R.layout.simple_list_item_2, null)
+        val view: View = convertView ?: mLayoutInflater.inflate(R.layout.list_tasks, null)
 
         //val titleText = convertView!!.findViewById<View>(R.id.titleTextView) as TextView
         //titleText.text = mTaskList[position].title
 
-        val textView1 = view.findViewById<TextView>(android.R.id.text1)
-        val textView2 = view.findViewById<TextView>(android.R.id.text2)
+        val textView1 = view.findViewById<TextView>(R.id.titleTextView)
+        val textView2 = view.findViewById<TextView>(R.id.dateTextView)
 
-        textView1.text = "タイトル： " + mTaskList[position].title
+        textView1.text = mTaskList[position].title
 
         val sdf = SimpleDateFormat("yyyy年 M月 d日")
 
         val date = mTaskList[position].date
 
-        textView2.text = "完了予定日： " + sdf.format(date)
+        textView2.text = sdf.format(date)
 
         return view
     }

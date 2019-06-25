@@ -18,15 +18,16 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             android:id="@+id/job_Edit"
+            android:textColor="#000000"
             android:hint="仕事内容"
             android:inputType="text"
             android:layout_above="@+id/date_Text"/>
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="完了予定日"
+            style="@style/TextBlack"
             android:id="@+id/date_Text"
+            android:layout_alignParentLeft="true"
             android:layout_above="@+id/date_button"
             android:layout_centerInParent="true"/>
 
@@ -41,9 +42,8 @@
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="担当者"
+            style="@style/TextBlack"
             android:id="@+id/user_Text"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"/>

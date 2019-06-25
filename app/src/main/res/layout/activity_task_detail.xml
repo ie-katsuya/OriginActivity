@@ -14,18 +14,52 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/title_textview"
+            android:textColor="#000000"
             android:text="タイトル"
-            android:textSize="40sp"
-            android:layout_alignParentTop="true"/>
+            android:textSize="20dp"
+            android:layout_alignParentTop="true"
+            android:id="@+id/title_text"/>
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="date"
-            android:layout_below="@+id/title_textview"
-            android:textSize="20sp"
-            android:id="@+id/date_Text"/>
+            android:textColor="#000000"
+            tools:text="title"
+            android:textSize="20dp"
+            android:layout_below="@+id/title_text"
+            android:gravity="right"
+            android:id="@+id/task_text"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="完了予定日"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/task_text"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/date_text"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            tools:text="完了予定日"
+            android:textSize="20dp"
+            android:layout_below="@+id/date_text"
+            android:gravity="right"
+            android:id="@+id/task_date"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="ジョブ"
+            android:textSize="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/task_date"
+            android:id="@+id/job_text"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -35,20 +69,28 @@
             android:layout_centerInParent="true"
             android:id="@+id/empty_message"/>
 
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_button"
+            android:layout_below="@+id/task_date"
+            android:text="追加"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_custom"/>
+
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView_detail"
-            android:layout_below="@+id/date_Text"
-            android:layout_above="@+id/add_button"
-            android:layout_alignParentStart="true" android:layout_alignParentLeft="true"/>
-
-    <Button
-            android:id="@+id/add_button"
-            android:layout_alignParentBottom="true"
-            android:text="ジョブ追加"
-            style="@style/ButtonText"
-            android:background="@drawable/button_custom"/>
+            android:textColor="#000000"
+            android:layout_below="@+id/add_button"
+            android:drawSelectorOnTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
 
 
 </RelativeLayout>

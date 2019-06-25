@@ -18,8 +18,11 @@
             android:inputType="textPassword|number|text"
             android:layout_centerInParent="true"
             android:id="@+id/pass_pass"
+            android:textColor="#000000"
+            android:hint="パスワード"
             android:layout_above="@+id/Decide_button"/>
 
+    
     <Button
             android:text="決定"
             android:id="@+id/Decide_button"

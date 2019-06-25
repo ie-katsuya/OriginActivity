@@ -11,8 +11,8 @@
 
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="タイトル"
+            style="@style/TextBlack"
             android:id="@+id/Title_Text"
             android:layout_centerInParent="true"
             android:layout_above="@+id/title_Edit"/>
@@ -29,8 +29,8 @@
 
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="パスワード"
+            style="@style/TextBlack"
             android:id="@+id/pass_Text"
             android:layout_above="@+id/pass_Edit"
             android:layout_marginTop="50dp"

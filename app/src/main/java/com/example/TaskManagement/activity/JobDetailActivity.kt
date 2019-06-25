@@ -35,7 +35,7 @@ class JobDetailActivity : AppCompatActivity() {
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as Job
 
-        setTitle(job!!.title)
+        setTitle("ジョブ")
 
         updateContentLabel()
         updateDateLabel()
@@ -64,13 +64,13 @@ class JobDetailActivity : AppCompatActivity() {
         val date = job?.date
 
         val datetextview: TextView = findViewById(R.id.date_textview)
-        datetextview.text = "完了予定日： " + sdf.format(date)
+        datetextview.text = sdf.format(date)
     }
 
     private fun updateUserNameLabel() {
         val userNameTextView = findViewById(R.id.user_name) as TextView
 
-        userNameTextView.text = "担当者： " + job?.userName
+        userNameTextView.text = job?.userName
     }
 
     // アクションバーの戻る処理

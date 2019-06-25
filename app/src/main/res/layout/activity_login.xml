@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/emailText"
                 android:inputType="text"
+                style="@style/TextBlack"
                 android:hint="メールアドレス" />
 
         <EditText
@@ -30,12 +31,14 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="パスワード(6文字以上)"
+                style="@style/TextBlack"
                 android:id="@+id/passwordText" />
 
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="表示名"
+                style="@style/TextBlack"
                 android:inputType="text"
                 android:id="@+id/nameText" />
 

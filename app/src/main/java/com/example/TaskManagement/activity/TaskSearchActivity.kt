@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ListView
+import android.widget.TextView
 import com.example.TaskManagement.R
 import com.example.TaskManagement.adapter.TasklistAdapter
 import com.example.TaskManagement.model.api.GetTaskAPI
@@ -44,6 +47,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         listTouch()
 
         searchButton.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View) {
@@ -73,6 +77,7 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
             if (sameUserflag) {
                 //Favoriteに登録していたら、詳細画面へ
                 startActivity(TaskDetailActivity.createIntent(this, mAdapter.getTask(position)))
+                finish()
             }else{
                 //Favoriteになかったら、パスワードチェック画面へ
                 startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))

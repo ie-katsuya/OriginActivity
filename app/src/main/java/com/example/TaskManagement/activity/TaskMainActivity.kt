@@ -36,7 +36,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setTitle("タスク管理")
+        setTitle("タスク一覧")
         setupListView()
         menu_view.setVisibility(View.INVISIBLE)
 

@@ -15,6 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView"
+            android:textColor="#000000"
+            android:drawSelectorOnTop="true"
             android:layout_below="@+id/search_edit"/>
 
     <EditText
@@ -24,6 +26,7 @@
             android:id="@+id/search_edit"
             android:layout_margin="16dp"
             android:layout_alignParentLeft="true"
+            android:textColor="#000000"
             android:hint="検索ワード"
             android:inputType="text"/>
 
@@ -32,7 +35,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/searchButton"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_search_blue"
+            android:src="@drawable/ic_search_blue"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

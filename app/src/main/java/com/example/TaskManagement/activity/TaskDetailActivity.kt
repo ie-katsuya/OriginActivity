@@ -43,7 +43,7 @@ class TaskDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_detail)
         task = intent.getSerializableExtra(KEY_TASK) as Task
-        setTitle(task.title)
+        setTitle("タスク")
 
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -77,8 +77,8 @@ class TaskDetailActivity : AppCompatActivity() {
     }
 
     private fun updateTitleLabel() {
-        val titletextview: TextView = findViewById(R.id.title_textview)
-        titletextview.text = task.title
+        val datetextview: TextView = findViewById(R.id.task_text)
+        datetextview.text = task.title
     }
 
     private fun updateDateLabel() {
@@ -86,8 +86,8 @@ class TaskDetailActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("yyyy年 M月 d日")
         val date = task.date
 
-        val datetextview: TextView = findViewById(R.id.date_Text)
-        datetextview.text = "完了予定日： " + sdf.format(date)
+        val datetextview: TextView = findViewById(R.id.task_date)
+        datetextview.text = sdf.format(date)
     }
 
     private fun setupListView() {
