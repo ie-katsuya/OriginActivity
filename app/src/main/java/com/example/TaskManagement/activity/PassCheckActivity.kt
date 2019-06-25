@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.ListView
 import com.example.TaskManagement.R
-import com.example.TaskManagement.adapter.TaskDetailAdapter
 import com.example.TaskManagement.model.api.SetTaskAPI
 import com.example.TaskManagement.model.entity.Task
 import kotlinx.android.synthetic.main.activity_pass_check.*
 
-class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
+class PassCheckActivity : AppCompatActivity() {
     private lateinit var task: Task
 
     companion object {
@@ -35,20 +33,13 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
 
         task = intent.getSerializableExtra(TaskDetailActivity.KEY_TASK) as Task
 
-        Decide_button.setOnClickListener(this)
-        Buck_button.setOnClickListener(this)
-    }
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            Buck_button.id -> {
-                finish()
-                startActivity(TaskMainActivity.createIntent(this))
-            }
-            else -> {
-                registrationPass(v)
-            }
+        Decide_button.setOnClickListener {
+            registrationPass(it)
         }
+
     }
 
     private fun registrationPass(v: View) {
@@ -77,7 +68,12 @@ class PassCheckActivity : AppCompatActivity(), View.OnClickListener {
                 complete()
 
             }
-
         }
+    }
+
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

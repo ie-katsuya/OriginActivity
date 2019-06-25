@@ -18,13 +18,12 @@ import com.example.TaskManagement.model.entity.Job
 import com.example.TaskManagement.model.entity.User
 import com.example.taskapp.UserNameAdapter
 import kotlinx.android.synthetic.main.activity_add_job.*
-import kotlinx.android.synthetic.main.activity_task_create.Buck_button
 import kotlinx.android.synthetic.main.activity_task_create.Decide_button
 import kotlinx.android.synthetic.main.activity_task_create.date_button
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
+class JobCreateActivity : AppCompatActivity() {
 
     companion object {
         private const val KEY_TASK_ID = "KEY_TASK_ID"
@@ -80,6 +79,9 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         taskId = intent.getStringExtra(KEY_TASK_ID)
         job = intent.getSerializableExtra(KEY_JOB) as? Job
 
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
         job?.also { job ->
             updateflag = true
             job_Edit.setText(job.title)
@@ -104,18 +106,8 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
 
         date_button.setOnClickListener(mOnDateClickListener)
-        Decide_button.setOnClickListener(this)
-        Buck_button.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            Buck_button.id -> {
-                finish()
-            }
-            else -> {
-                registrationJob(v)
-            }
+        Decide_button.setOnClickListener {
+            registrationJob(it)
         }
     }
 
@@ -196,5 +188,9 @@ class JobCreateActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
 }

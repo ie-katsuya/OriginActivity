@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.method.ScrollingMovementMethod
-import android.view.View
 import android.widget.TextView
 import com.example.TaskManagement.R
 import com.example.TaskManagement.model.entity.Job
 import kotlinx.android.synthetic.main.activity_job_detail.*
 import java.text.SimpleDateFormat
 
-class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
+class JobDetailActivity : AppCompatActivity() {
     companion object {
         private const val KEY_TASK_ID = "KEY_TASK_ID"
         const val KEY_JOB = "KEY_JOB"
@@ -41,8 +40,14 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         updateDateLabel()
         updateUserNameLabel()
 
-        edit_button.setOnClickListener(this)
-        back_button.setOnClickListener(this)
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        edit_button.setOnClickListener {
+            finish()
+            //ジョブ作成画面に遷移
+            startActivity(JobCreateActivity.createIntent(this, taskId, job))
+        }
     }
 
     private fun updateContentLabel() {
@@ -67,17 +72,9 @@ class JobDetailActivity : AppCompatActivity(), View.OnClickListener {
         userNameTextView.text = "担当者： " + job?.userName
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            back_button.id -> {
-                finish()
-            }
-            else -> {
-                finish()
-                //タスク作成画面に遷移
-                startActivity(JobCreateActivity.createIntent(this, taskId, job))
-            }
-        }
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
-
 }

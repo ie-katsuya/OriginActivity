@@ -37,6 +37,9 @@ class SettingActivity : AppCompatActivity() {
         val nameText: EditText = findViewById(R.id.nameText)
         nameText.setText(name)
 
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
         mDataBaseReference = FirebaseDatabase.getInstance().reference
 
         // UIの初期設定
@@ -96,5 +99,11 @@ class SettingActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // バックキーを押した際、タスク管理画面に移行
         startActivity(TaskMainActivity.createIntent(this))
+    }
+
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

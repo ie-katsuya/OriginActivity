@@ -48,6 +48,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         setTitle("ログイン")
 
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val isLogout = intent?.getBooleanExtra(KEY_LOGOUT, false) ?: false
         if (isLogout) {
             // だす
@@ -201,5 +204,11 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToTaskMain(){
         startActivity(TaskMainActivity.createIntent(this))
         finish()
+    }
+
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

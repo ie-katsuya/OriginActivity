@@ -38,6 +38,7 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         setTitle("タスク管理")
         setupListView()
+        menu_view.setVisibility(View.INVISIBLE)
 
         //リストをタッチした処理
         ListTouch()
@@ -56,7 +57,13 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        search_button.setOnClickListener(this)
+        add_fab.setOnClickListener{
+            startActivity(TaskCreateActivity.createIntent(this))
+        }
+
+        search_fab.setOnClickListener{
+            startActivity(TaskSearchActivity.createIntent(this))
+        }
     }
 
     override fun onClick(v: View?) {
@@ -141,7 +148,6 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         deleteAPI.deleteUser(task) {
             updateTaskList()
         }
-
     }
 
     private fun deleteAllTask(task: Task) {
@@ -150,8 +156,13 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onResume() {
         super.onResume()
+        menu_view.setVisibility(View.GONE)
+        add_fab.setVisibility(View.GONE)
+        search_fab.setVisibility(View.GONE)
+
         updateTaskList()
     }
 

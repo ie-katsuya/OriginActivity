@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.JobDetailActivity">
+        tools:context=".activity.JobDetailActivity"
+        android:background="#FFFFFF">
 
     <TextView
             android:layout_width="match_parent"
@@ -44,13 +45,5 @@
             android:text="編集"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/user_name"/>
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            android:text="戻る"
-            android:layout_marginTop="30dp"
-            android:layout_below="@+id/edit_button"/>
 
 </RelativeLayout>

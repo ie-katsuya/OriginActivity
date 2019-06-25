@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_task_search.*
 
+
 class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
@@ -33,6 +34,9 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_search)
         setTitle("タスク検索")
+
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
 
         setupListView()
 
@@ -74,6 +78,12 @@ class TaskSearchActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(PassCheckActivity.createIntent(this, mAdapter.getTask(position)))
             }
         }
+    }
+
+    // 追加
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
 }

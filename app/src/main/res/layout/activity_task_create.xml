@@ -6,7 +6,8 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        android:background="#FFFFFF">
 
     <TextView
             android:layout_width="match_parent"
@@ -64,11 +65,5 @@
             android:id="@+id/Decide_button"
             android:layout_below="@+id/date_button"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="戻る"
-            android:id="@+id/Buck_button"
-            android:layout_below="@+id/Decide_button"/>
+
 </RelativeLayout>

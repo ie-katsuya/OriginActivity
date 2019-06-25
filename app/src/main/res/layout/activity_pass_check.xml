@@ -9,7 +9,8 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        tools:context=".activity.PassCheckActivity">
+        tools:context=".activity.PassCheckActivity"
+        android:background="#FFFFFF">
 
     <EditText
             android:layout_width="match_parent"

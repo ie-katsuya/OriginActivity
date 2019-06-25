@@ -45,6 +45,9 @@ class TaskDetailActivity : AppCompatActivity() {
         setTitle("タスク詳細")
         task = intent.getSerializableExtra(KEY_TASK) as Task
 
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
         initView()
     }
 
@@ -70,12 +73,6 @@ class TaskDetailActivity : AppCompatActivity() {
         add_button.setOnClickListener {
             //ジョブ追加画面に遷移
             startActivity(JobCreateActivity.createIntent(this, task.taskId, null))
-        }
-
-        backmain_button.setOnClickListener {
-            //メイン画面に遷移
-            finish()
-            startActivity(TaskMainActivity.createIntent(this))
         }
     }
 
@@ -170,5 +167,11 @@ class TaskDetailActivity : AppCompatActivity() {
         } else {
             empty_message.setVisibility(View.INVISIBLE)
         }
+    }
+
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

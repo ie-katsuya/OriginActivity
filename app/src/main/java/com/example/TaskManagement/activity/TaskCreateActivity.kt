@@ -34,6 +34,7 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
     // ログイン済みのユーザーを取得する
     var user = FirebaseAuth.getInstance().currentUser
 
+    //日付の処理
     private val mOnDateClickListener = View.OnClickListener {
         val datePickerDialog = DatePickerDialog(
             this,
@@ -55,12 +56,14 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_task_create)
         setTitle("タスク作成")
 
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val calendar = Calendar.getInstance()
         mYear = calendar.get(Calendar.YEAR)
         mMonth = calendar.get(Calendar.MONTH)
         mDay = calendar.get(Calendar.DAY_OF_MONTH)
 
-        Buck_button.setOnClickListener(this)
         Decide_button.setOnClickListener(this)
         date_button.setOnClickListener(mOnDateClickListener)
     }
@@ -72,45 +75,44 @@ class TaskCreateActivity : AppCompatActivity(), View.OnClickListener {
 
         val tdata = HashMap<String, Any>()
 
-        if (v == Buck_button) {
-            //タスク管理画面に遷移
-            finish()
-        } else if (v == Decide_button) {
-            val title = title_Edit.text.toString()
-            val pass = pass_Edit.text.toString()
+        val title = title_Edit.text.toString()
+        val pass = pass_Edit.text.toString()
 
-            if (title.isEmpty() == true) {
-                // タイトルが入力されていない時はエラーを表示するだけ
-                Snackbar.make(v, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
-                return
+        if (title.isEmpty() == true) {
+            // タイトルが入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "タイトルを入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        if (pass.isEmpty() == true) {
+            // 質問が入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        if (date.isEmpty() == true) {
+            // 質問が入力されていない時はエラーを表示するだけ
+            Snackbar.make(v, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
+            return
+        }
+
+        val calendar = GregorianCalendar(mYear, mMonth, mDay)
+        val date = calendar.time
+
+        tdata["title"] = title
+        tdata["pass"] = pass
+        tdata["date"] = date.time
+
+        taskAPI.setTask(tdata) { isResult ->
+            if (isResult) {
+                finish()
             }
-
-            if (pass.isEmpty() == true) {
-                // 質問が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v, "パスワードを入力して下さい", Snackbar.LENGTH_LONG).show()
-                return
-            }
-
-            if (date.isEmpty() == true) {
-                // 質問が入力されていない時はエラーを表示するだけ
-                Snackbar.make(v, "日付を入力して下さい", Snackbar.LENGTH_LONG).show()
-                return
-            }
-
-            val calendar = GregorianCalendar(mYear, mMonth, mDay)
-            val date = calendar.time
-
-            tdata["title"] = title
-            tdata["pass"] = pass
-            tdata["date"] = date.time
-
-            taskAPI.setTask(tdata) { isResult ->
-                if (isResult) {
-                    finish()
-                }
-            }
-
         }
     }
 
+    // アクションバーの戻る処理
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
+    }
 }
