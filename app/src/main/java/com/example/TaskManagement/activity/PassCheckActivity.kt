@@ -43,6 +43,8 @@ class PassCheckActivity : AppCompatActivity() {
     }
 
     private fun registrationPass(v: View) {
+        var i: Int = 0
+
         if (pass_pass.text.toString() != task.pass) {
             // タイトルが入力されていない時はエラーを表示するだけ
             Snackbar.make(v, "パスワードが間違っています", Snackbar.LENGTH_LONG).show()
@@ -50,7 +52,10 @@ class PassCheckActivity : AppCompatActivity() {
         }
 
         taskAuthentication {
-            startActivity(TaskDetailActivity.createIntent(this, task))
+            if (i == 0) {
+                startActivity(TaskDetailActivity.createIntent(this, task))
+                i++
+            }
         }
     }
 

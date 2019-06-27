@@ -163,6 +163,8 @@ class TaskMainActivity : AppCompatActivity(), View.OnClickListener {
         add_fab.setVisibility(View.GONE)
         search_fab.setVisibility(View.GONE)
 
+        setupListView()
+
         updateTaskList()
     }
 

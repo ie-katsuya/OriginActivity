@@ -11,7 +11,6 @@ import com.google.firebase.database.ValueEventListener
 class DeleteAPI : FirebaseAPI() {
 
     fun deleteUser(task: Task, callback: () -> Unit) {
-
         deleteTaskUser(task){
             deleteFavoriteUser(task){
                 callback()
@@ -117,7 +116,6 @@ class DeleteAPI : FirebaseAPI() {
             if (databaseError != null) {
                 return@removeValue
             }
-
             callback()
         }
     }

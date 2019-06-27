@@ -172,6 +172,7 @@ class TaskDetailActivity : AppCompatActivity() {
     // アクションバーの戻る処理
     override fun onSupportNavigateUp(): Boolean {
         finish()
+        startActivity(TaskMainActivity.createIntent(this))
         return super.onSupportNavigateUp()
     }
 }
