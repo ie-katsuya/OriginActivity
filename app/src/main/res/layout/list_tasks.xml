@@ -23,6 +23,8 @@
             android:id="@+id/titleTextView"
             android:layout_marginLeft="30dp"
             android:textSize="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_toRightOf="@+id/title"/>
 
     <TextView

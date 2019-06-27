@@ -90,6 +90,8 @@
             android:drawSelectorOnTop="true"
             android:layout_marginTop="10dp"
             android:layout_alignParentStart="true"
+            android:divider="#6495ED"
+            android:dividerHeight="2sp"
             android:layout_alignParentLeft="true"/>
 
 

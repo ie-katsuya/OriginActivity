@@ -22,7 +22,7 @@
             android:hint="パスワード"
             android:layout_above="@+id/Decide_button"/>
 
-    
+
     <Button
             android:text="決定"
             android:id="@+id/Decide_button"

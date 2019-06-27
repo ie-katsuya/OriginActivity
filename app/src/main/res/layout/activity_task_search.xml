@@ -17,6 +17,8 @@
             android:id="@+id/listView"
             android:textColor="#000000"
             android:drawSelectorOnTop="true"
+            android:divider="#6495ED"
+            android:dividerHeight="2sp"
             android:layout_below="@+id/search_edit"/>
 
     <EditText

@@ -21,6 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="#000000"
+            android:divider="#6495ED"
+            android:dividerHeight="2sp"
             android:id="@+id/listView"
             android:layout_above="@+id/fab"
             android:layout_below="@+id/title_text"
