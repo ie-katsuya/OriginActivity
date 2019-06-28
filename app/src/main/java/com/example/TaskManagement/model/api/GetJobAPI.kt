@@ -23,14 +23,14 @@ class GetJobAPI : FirebaseAPI() {
                 }
 
                 override fun onDataChange(datasnapshot: DataSnapshot) {
-                    getJobItem(datasnapshot, callback)
+                    getJobItem(taskId, datasnapshot, callback)
                     contentRef.removeEventListener(this)
                 }
             }
         )
     }
 
-    private fun getJobItem(datasnapshot: DataSnapshot, callback: (List<Job>) -> Unit) {
+    private fun getJobItem(taskId: String, datasnapshot: DataSnapshot, callback: (List<Job>) -> Unit) {
         //関与しているタスクをリストに表示
         val jobIdList = mutableListOf<String>()
         datasnapshot.children.forEach { item ->
@@ -41,22 +41,35 @@ class GetJobAPI : FirebaseAPI() {
         var currentCount = 0L
         val jobList = mutableListOf<Job>()
 
-        if(jobIdList.isEmpty()){
+        if (jobIdList.isEmpty()) {
             callback(jobList)
             return
         }
 
-        //val job = JobTranslater.dataSnapshotToJob(datasnapshot)
+        jobIdList.forEach { jobId ->
+            val jobDetabaseReference = firebaseReference
+                .child(Const.ContentsPATH)
+                .child(taskId)
+                .child(Const.JobPATH)
+                .child(jobId)
 
-        JobTranslater.dataSnapshotToJob2(datasnapshot){
-            jobList.add(it)
+            jobDetabaseReference.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //未使用
+                }
 
-            if (currentCount >= totalCount) {
-                callback(jobList)
-            }
+                override fun onDataChange(data: DataSnapshot) {
+                    jobDetabaseReference.removeEventListener(this)
+                    currentCount++
+                    JobTranslater.dataSnapshotToJob2(data) {
+                        jobList.add(it)
+                    }
+                    if (currentCount >= totalCount) {
+                        callback(jobList)
+                    }
+                }
+            })
+
         }
-
     }
-
-
 }
