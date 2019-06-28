@@ -19,9 +19,9 @@ class DeleteAPI : FirebaseAPI() {
     }
 
     fun deleteAllTask(task: Task, callback: () -> Unit) {
-        deleteTask(task){
-            deleteUser(task){
-                deleteFavoriteTask(task){
+        deleteFavoriteTask(task) {
+            deleteUser(task) {
+                deleteTask(task) {
                     callback()
                 }
             }
