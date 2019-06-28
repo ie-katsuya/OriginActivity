@@ -12,6 +12,7 @@ import com.example.TaskManagement.Const
 import com.example.TaskManagement.R
 import com.example.TaskManagement.adapter.TaskDetailAdapter
 import com.example.TaskManagement.model.api.DeleteAPI
+import com.example.TaskManagement.model.api.GetJobAPI
 import com.example.TaskManagement.model.api.SyncJobAPI
 import com.example.TaskManagement.model.entity.Job
 import com.example.TaskManagement.model.entity.Task
@@ -38,6 +39,7 @@ class TaskDetailActivity : AppCompatActivity() {
 
     private val syncJobAPI by lazy { SyncJobAPI(task.taskId) }
     private val deleteAPI = DeleteAPI()
+    private val getJobAPI = GetJobAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,9 +140,11 @@ class TaskDetailActivity : AppCompatActivity() {
 
     private fun deleteJob(job: Job) {
         deleteAPI.deleteJob(task, job){
-            syncJobAPI.syncStart()
-            listEmpty()
+            getJobAPI.getJob(task.taskId){
+                mAdapter.setJobList(it)
+            }
         }
+        listEmpty()
     }
 
     override fun onResume() {

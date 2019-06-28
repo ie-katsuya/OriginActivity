@@ -1,5 +1,6 @@
 package com.example.TaskManagement.model.api
 
+import android.util.Log
 import com.example.TaskManagement.Const
 import com.example.TaskManagement.model.entity.Job
 import com.example.TaskManagement.model.translater.JobTranslater
@@ -40,13 +41,21 @@ class GetJobAPI : FirebaseAPI() {
         var currentCount = 0L
         val jobList = mutableListOf<Job>()
 
-        val job = JobTranslater.dataSnapshotToJob(datasnapshot)
-        if(totalCount != 0L) {
-            jobList.add(job)
+        if(jobIdList.isEmpty()){
+            callback(jobList)
+            return
+        }
+
+        //val job = JobTranslater.dataSnapshotToJob(datasnapshot)
+
+        JobTranslater.dataSnapshotToJob2(datasnapshot){
+            jobList.add(it)
+
             if (currentCount >= totalCount) {
                 callback(jobList)
             }
         }
+
     }
 
 
